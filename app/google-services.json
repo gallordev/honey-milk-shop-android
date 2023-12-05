@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "526395770646",
+    "project_id": "honeymilkshop-5733a",
+    "storage_bucket": "honeymilkshop-5733a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526395770646:android:17d1c95354d4ac3fc17237",
+        "android_client_info": {
+          "package_name": "com.honeymilk.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "526395770646-sbln35dni9d1vojbssmgnt20050vr2is.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwJsCI7_T0wCAkc94xXfimS8CZ2a3TLRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526395770646-sbln35dni9d1vojbssmgnt20050vr2is.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

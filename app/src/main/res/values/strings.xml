@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Honey Milk Shop</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_description">Description</string>
+    <string name="btn_add_image">Add Image</string>
+    <string name="hint_initial_campaign_date">Initial Date</string>
+    <string name="hint_final_campaign_date">Final Date Range</string>
+    <string name="btn_add_date_range">Add Date Range</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="btn_sign_up">Register</string>
+    <string name="btn_forgot_password">Forgot password? Click here.</string>
+</resources>

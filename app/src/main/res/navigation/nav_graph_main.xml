@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/signUpFragment">
+
+    <fragment
+        android:id="@+id/newCampaignFragment"
+        android:name="com.honeymilk.shop.ui.NewCampaignFragment"
+        android:label="fragment_new_campaign"
+        tools:layout="@layout/fragment_new_campaign" />
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.honeymilk.shop.ui.sign_up.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+
+</navigation>
