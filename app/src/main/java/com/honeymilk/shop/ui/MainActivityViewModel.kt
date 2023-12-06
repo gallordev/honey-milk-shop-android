@@ -1,4 +1,4 @@
-package com.honeymilk.shop.ui.sign_up
+package com.honeymilk.shop.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,25 +12,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
+class MainActivityViewModel @Inject constructor(
     private val authRepository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
-//    private val _currentUser = MutableLiveData(User())
-//    val currentUser: LiveData<User>
-//        get() = _currentUser
-//
-//    init {
-//        viewModelScope.launch {
-//            authRepository.currentUser.collect {
-//                _currentUser.postValue(it)
-//            }
-//        }
-//    }
+    private val _currentUser = MutableLiveData<User>(null)
+    val currentUser: LiveData<User>
+        get() = _currentUser
 
-    fun signUp(email: String, password: String) {
+    init {
         viewModelScope.launch {
-            authRepository.signUp(email, password)
+            authRepository.currentUser.collect{
+                _currentUser.postValue(it)
+            }
         }
     }
 

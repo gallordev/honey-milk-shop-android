@@ -1,4 +1,4 @@
-package com.honeymilk.shop.ui.sign_up
+package com.honeymilk.shop.ui.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,32 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.honeymilk.shop.R
-import com.honeymilk.shop.databinding.FragmentSignUpBinding
+import com.honeymilk.shop.databinding.FragmentLoginBinding
 import com.honeymilk.shop.utils.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::inflate) {
+class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
-    private val viewModel: SignUpViewModel by viewModels()
-
+    private val viewModel: LoginViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.currentUser.observe(viewLifecycleOwner) {
-//            binding.user.text = it.email
-//        }
         with(binding) {
-            btnSignUp.setOnClickListener {
-                signUp(
+            btnLogin.setOnClickListener {
+                viewModel.login(
                     textFieldEmail.editText!!.text.toString(),
                     textFieldPassword.editText!!.text.toString()
                 )
+
             }
         }
-    }
 
-    private fun signUp(email: String, password: String) {
-        viewModel.signUp(email, password)
     }
 
 }
