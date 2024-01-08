@@ -1,4 +1,4 @@
-package com.honeymilk.shop.ui
+package com.honeymilk.shop.ui.campaign
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

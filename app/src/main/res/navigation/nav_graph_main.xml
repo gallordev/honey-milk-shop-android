@@ -3,24 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/homeFragment">
+
+<!--    <fragment-->
+<!--        android:id="@+id/newCampaignFragment"-->
+<!--        android:name="com.honeymilk.shop.ui.campaign.NewCampaignFragment"-->
+<!--        android:label="fragment_new_campaign"-->
+<!--        tools:layout="@layout/fragment_new_campaign" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/signUpFragment"-->
+<!--        android:name="com.honeymilk.shop.ui.sign_up.SignUpFragment"-->
+<!--        android:label="fragment_sign_up"-->
+<!--        tools:layout="@layout/fragment_sign_up" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/loginFragment"-->
+<!--        android:name="com.honeymilk.shop.ui.login.LoginFragment"-->
+<!--        android:label="fragment_login"-->
+<!--        tools:layout="@layout/fragment_login" />-->
 
     <fragment
-        android:id="@+id/newCampaignFragment"
-        android:name="com.honeymilk.shop.ui.NewCampaignFragment"
-        android:label="fragment_new_campaign"
-        tools:layout="@layout/fragment_new_campaign" />
-
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.honeymilk.shop.ui.sign_up.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
-
+        android:id="@+id/homeFragment"
+        android:name="com.honeymilk.shop.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.honeymilk.shop.ui.login.LoginFragment"
+        android:name="com.honeymilk.shop.ui.auth.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
-
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordRecoveryFragment"
+            app:destination="@id/passwordRecoveryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.honeymilk.shop.ui.auth.sign_up.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/passwordRecoveryFragment"
+        android:name="com.honeymilk.shop.ui.auth.pass_recovery.PasswordRecoveryFragment"
+        android:label="fragment_password_recovery"
+        tools:layout="@layout/fragment_password_recovery" />
 </navigation>

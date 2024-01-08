@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/screen_padding"
-    tools:context=".ui.login.LoginFragment">
+    tools:context=".ui.auth.login.LoginFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField_email"
