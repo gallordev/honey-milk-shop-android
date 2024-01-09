@@ -27,7 +27,11 @@
         android:id="@+id/homeFragment"
         android:name="com.honeymilk.shop.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_newCampaignFragment"
+            app:destination="@id/newCampaignFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.honeymilk.shop.ui.auth.login.LoginFragment"
@@ -50,4 +54,9 @@
         android:name="com.honeymilk.shop.ui.auth.pass_recovery.PasswordRecoveryFragment"
         android:label="fragment_password_recovery"
         tools:layout="@layout/fragment_password_recovery" />
+    <fragment
+        android:id="@+id/newCampaignFragment"
+        android:name="com.honeymilk.shop.ui.campaign.NewCampaignFragment"
+        android:label="fragment_new_campaign"
+        tools:layout="@layout/fragment_new_campaign" />
 </navigation>

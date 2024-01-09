@@ -1,11 +1,13 @@
 package com.honeymilk.shop.utils
 
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
@@ -29,6 +31,10 @@ abstract class BaseFragment<VB : ViewBinding>(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun showErrorMessage(errorMessage: String) {
+        Snackbar.make(binding.root, "Error: $errorMessage", Snackbar.LENGTH_SHORT).show()
     }
 
 }

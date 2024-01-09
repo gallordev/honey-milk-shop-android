@@ -4,7 +4,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.honeymilk.shop.model.User
 import com.honeymilk.shop.repository.AuthRepository
-import com.honeymilk.shop.utils.Result
+import com.honeymilk.shop.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -36,28 +36,28 @@ class AuthRepositoryImpl @Inject constructor(
             awaitClose { auth.removeAuthStateListener(listener) }
         }
 
-    override suspend fun signUp(email: String, password: String): Flow<Result<String>> = flow {
-        emit(Result.Loading())
+    override suspend fun signUp(email: String, password: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
         val authResult: AuthResult = auth.createUserWithEmailAndPassword(email, password).await()
-        emit(Result.Success(authResult.user?.uid.toString()))
+        emit(Resource.Success(authResult.user?.uid.toString()))
     }.catch {
-        emit(Result.Error(it.message.toString()))
+        emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun signIn(email: String, password: String): Flow<Result<String>> = flow {
-        emit(Result.Loading())
+    override suspend fun signIn(email: String, password: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
         val authResult: AuthResult = auth.signInWithEmailAndPassword(email, password).await()
-        emit(Result.Success(authResult.user?.uid.toString()))
+        emit(Resource.Success(authResult.user?.uid.toString()))
     }.catch {
-        emit(Result.Error(it.message.toString()))
+        emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun sendRecoveryEmail(email: String): Flow<Result<String>> = flow {
-        emit(Result.Loading())
+    override suspend fun sendRecoveryEmail(email: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
         auth.sendPasswordResetEmail(email).await()
-        emit(Result.Success(email))
+        emit(Resource.Success(email))
     }.catch {
-        emit(Result.Error(it.message.toString()))
+        emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
     override suspend fun deleteAccount() {

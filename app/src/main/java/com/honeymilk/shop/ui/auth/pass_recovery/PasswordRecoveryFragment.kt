@@ -1,17 +1,13 @@
 package com.honeymilk.shop.ui.auth.pass_recovery
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentPasswordRecoveryBinding
 import com.honeymilk.shop.utils.BaseFragment
-import com.honeymilk.shop.utils.Result
+import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,14 +17,14 @@ class PasswordRecoveryFragment : BaseFragment<FragmentPasswordRecoveryBinding>(F
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.result.observe(viewLifecycleOwner) {
+        viewModel.resource.observe(viewLifecycleOwner) {
             val result = it ?: return@observe
             when(result) {
-                is Result.Error -> {
+                is Resource.Error -> {
                     Toast.makeText(requireContext(), "Error: ${result.message}", Toast.LENGTH_SHORT).show()
                 }
-                is Result.Loading -> {/* empty */ }
-                is Result.Success -> {
+                is Resource.Loading -> {/* empty */ }
+                is Resource.Success -> {
                     binding.btnPasswordRecovery.isEnabled = true
                     Toast.makeText(requireContext(), "An email has been sent to ${result.data}", Toast.LENGTH_LONG).show()
                     findNavController().popBackStack()

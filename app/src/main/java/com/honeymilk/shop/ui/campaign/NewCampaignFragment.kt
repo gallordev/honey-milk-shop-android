@@ -1,73 +1,75 @@
 package com.honeymilk.shop.ui.campaign
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.honeymilk.shop.databinding.FragmentNewCampaignBinding
+import com.honeymilk.shop.model.Campaign
+import com.honeymilk.shop.utils.BaseFragment
+import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.Util.toDate
+import com.honeymilk.shop.utils.getText
+import dagger.hilt.android.AndroidEntryPoint
 
-class NewCampaignFragment : Fragment() {
+@AndroidEntryPoint
+class NewCampaignFragment : BaseFragment<FragmentNewCampaignBinding>(FragmentNewCampaignBinding::inflate) {
 
-    private var _binding: FragmentNewCampaignBinding? = null
-    private val binding: FragmentNewCampaignBinding get() = _binding!!
-
+    private var campaignImageURL: String = ""
+    private val newCampaignViewModel: NewCampaignViewModel by viewModels()
     private val launcher: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            uri?.let { Glide.with(requireContext()).load(it).into(binding.imageViewImage) }
+            uri?.let {
+                campaignImageURL = it.toString()
+                Glide.with(requireContext()).load(it).into(binding.imageViewImage)
+            }
         }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNewCampaignBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val dateRangePicker =
-            MaterialDatePicker.Builder.dateRangePicker()
-                .setTitleText("Select dates")
-                .build()
-
         with(binding) {
+            newCampaignViewModel.resource.observe(viewLifecycleOwner) {
+                val resource = it ?: return@observe
+                when(resource) {
+                    is Resource.Error -> {
+                        btnSave.isEnabled = true
+                        showErrorMessage(resource.message ?: "Unknown Error")
+                    }
+                    is Resource.Loading -> {
+                        btnSave.isEnabled = false
+                    }
+                    is Resource.Success -> {
+                        findNavController().popBackStack()
+                    }
+                }
+            }
             btnAddImage.setOnClickListener {
                 launcher.launch(
                     PickVisualMediaRequest.Builder()
                         .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly).build()
                 )
             }
-
-            btnDateRange.setOnClickListener {
-                dateRangePicker.show(childFragmentManager, tag)
-            }
-
-            dateRangePicker.addOnPositiveButtonClickListener {
-                textFieldInitialDate.editText?.setText(it.first.toDate()?.toString())
-                textFieldFinalDate.editText?.setText(it.second.toDate()?.toString())
+            btnSave.setOnClickListener {
+                val campaign = getFormData()
+                newCampaignViewModel.newCampaign(campaign)
             }
         }
-
-
-
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    companion object {
-        fun newInstance(): Fragment = NewCampaignFragment()
+    private fun getFormData(): Campaign {
+        with(binding) {
+            return Campaign(
+                name = textFieldName.getText(),
+                description = textFieldDescription.getText(),
+                imageURL = campaignImageURL,
+                isActive = switchCampaignStatus.isChecked
+            )
+        }
     }
 
 }

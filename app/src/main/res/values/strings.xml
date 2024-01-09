@@ -17,4 +17,7 @@
     <string name="title_password_recovery">Password Recovery.</string>
     <string name="body_password_recovery">You will receive instructions for reseting your password.</string>
     <string name="btn_password_recovery">Send Password Recovery Email</string>
+    <string name="btn_new_campaign">New Campaign</string>
+    <string name="switch_label_campaign_status">Set this campaign as active</string>
+    <string name="btn_save">Save</string>
 </resources>
