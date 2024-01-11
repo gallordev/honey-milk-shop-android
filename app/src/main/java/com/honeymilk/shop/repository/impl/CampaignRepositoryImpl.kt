@@ -7,6 +7,9 @@ import com.google.firebase.firestore.toObject
 import com.honeymilk.shop.model.Campaign
 import com.honeymilk.shop.repository.AuthRepository
 import com.honeymilk.shop.repository.CampaignRepository
+import com.honeymilk.shop.utils.FirebaseKeys.CAMPAIGNS_COLLECTION
+import com.honeymilk.shop.utils.FirebaseKeys.CREATED_AT_FIELD
+import com.honeymilk.shop.utils.FirebaseKeys.USER_ID_FIELD
 import com.honeymilk.shop.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,13 +27,13 @@ class CampaignRepositoryImpl @Inject constructor(
 ) : CampaignRepository {
 
     private val collection
-        get() = firestore.collection(CAMPAIGN_COLLECTION)
+        get() = firestore.collection(CAMPAIGNS_COLLECTION)
             .whereEqualTo(USER_ID_FIELD, auth.currentUserId)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val campaigns: Flow<List<Campaign>>
         get() = auth.currentUser.flatMapLatest { user ->
-            firestore.collection(CAMPAIGN_COLLECTION)
+            firestore.collection(CAMPAIGNS_COLLECTION)
                 .whereEqualTo(USER_ID_FIELD, user.id)
                 .orderBy(CREATED_AT_FIELD, Query.Direction.DESCENDING)
                 .dataObjects()
@@ -38,7 +41,7 @@ class CampaignRepositoryImpl @Inject constructor(
 
     override suspend fun getCampaign(campaignId: String): Flow<Resource<Campaign?>> = flow {
             emit(Resource.Loading())
-            val data: Campaign? = firestore.collection(CAMPAIGN_COLLECTION)
+            val data: Campaign? = firestore.collection(CAMPAIGNS_COLLECTION)
                 .document(campaignId).get().await()
                 .toObject()
             emit(Resource.Success(data))
@@ -49,7 +52,7 @@ class CampaignRepositoryImpl @Inject constructor(
     override suspend fun newCampaign(campaign: Campaign): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         val updatedCampaign = campaign.copy(userId = auth.currentUserId)
-        val data: String = firestore.collection(CAMPAIGN_COLLECTION).add(updatedCampaign).await().id
+        val data: String = firestore.collection(CAMPAIGNS_COLLECTION).add(updatedCampaign).await().id
         emit(Resource.Success(data))
     }.catch {
         emit(Resource.Error(it.message.toString()))
@@ -61,13 +64,6 @@ class CampaignRepositoryImpl @Inject constructor(
 
     override suspend fun deleteCampaign(campaignId: String): Flow<Resource<String>> {
         TODO("Not yet implemented")
-    }
-
-    companion object {
-        private const val CAMPAIGN_COLLECTION = "campaigns"
-
-        private const val USER_ID_FIELD = "userId"
-        private const val CREATED_AT_FIELD = "createdAt"
     }
 
 }

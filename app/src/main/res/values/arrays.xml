@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_groups">
+        <item>ATEEZ</item>
+        <item>Black Pink</item>
+        <item>BTS</item>
+        <item>DPR</item>
+        <item>ENHYPEN</item>
+        <item>Monsta X</item>
+        <item>NewJeans</item>
+        <item>NCT</item>
+        <item>NCT Dream</item>
+        <item>Stray Kids</item>
+        <item>TXT</item>
+    </string-array>
+</resources>

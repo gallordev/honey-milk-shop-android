@@ -28,8 +28,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-        binding.btnNewCampaign.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_newCampaignFragment)
+        with(binding) {
+            btnNewCampaign.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_newCampaignFragment)
+            }
+            btnNewDesign.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_newDesignFragment)
+            }
         }
 
     }

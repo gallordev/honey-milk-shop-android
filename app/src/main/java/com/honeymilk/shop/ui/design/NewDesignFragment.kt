@@ -1,4 +1,4 @@
-package com.honeymilk.shop.ui.campaign
+package com.honeymilk.shop.ui.design
 
 import android.net.Uri
 import android.os.Bundle
@@ -9,30 +9,31 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.honeymilk.shop.databinding.FragmentNewCampaignBinding
+import com.honeymilk.shop.databinding.FragmentNewDesignBinding
 import com.honeymilk.shop.model.Campaign
+import com.honeymilk.shop.model.Design
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewCampaignFragment : BaseFragment<FragmentNewCampaignBinding>(FragmentNewCampaignBinding::inflate) {
+class NewDesignFragment : BaseFragment<FragmentNewDesignBinding>(FragmentNewDesignBinding::inflate) {
 
-    private var campaignImageURL: String = ""
-    private val newCampaignViewModel: NewCampaignViewModel by viewModels()
+    private var designImageURL: String = ""
+    private val newDesignViewModel: NewDesignViewModel by viewModels()
     private val launcher: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             uri?.let {
-                campaignImageURL = it.toString()
-                Glide.with(requireContext()).load(it).into(binding.imageViewCampaignImage)
+                designImageURL = it.toString()
+                Glide.with(requireContext()).load(it).into(binding.imageViewDesignImage)
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            newCampaignViewModel.resource.observe(viewLifecycleOwner) {
+            newDesignViewModel.resource.observe(viewLifecycleOwner) {
                 val resource = it ?: return@observe
                 when(resource) {
                     is Resource.Error -> {
@@ -54,19 +55,19 @@ class NewCampaignFragment : BaseFragment<FragmentNewCampaignBinding>(FragmentNew
                 )
             }
             btnSave.setOnClickListener {
-                val campaign = getFormData()
-                newCampaignViewModel.newCampaign(campaign)
+                val designData = getFormData()
+                newDesignViewModel.newDesign(designData)
             }
         }
     }
 
-    private fun getFormData(): Campaign {
+    private fun getFormData(): Design {
         with(binding) {
-            return Campaign(
+            return Design(
                 name = textFieldName.getText(),
                 description = textFieldDescription.getText(),
-                imageURL = campaignImageURL,
-                isActive = switchCampaignStatus.isChecked
+                group = menuGroup.getText(),
+                imageURL = designImageURL
             )
         }
     }

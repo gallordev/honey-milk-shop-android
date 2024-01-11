@@ -20,4 +20,6 @@
     <string name="btn_new_campaign">New Campaign</string>
     <string name="switch_label_campaign_status">Set this campaign as active</string>
     <string name="btn_save">Save</string>
+    <string name="btn_new_design">New Design</string>
+    <string name="menu_group">Group</string>
 </resources>
