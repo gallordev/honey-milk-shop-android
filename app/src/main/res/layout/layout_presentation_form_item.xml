@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/margin_8dp"
+    android:paddingHorizontal="@dimen/margin_8dp"
+    android:hint="@string/hint_price"
+    android:visibility="gone"
+    app:endIconMode="clear_text"
+    app:prefixText="@string/prefix_price">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:maxLines="1" />
+
+</com.google.android.material.textfield.TextInputLayout>

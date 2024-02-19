@@ -9,5 +9,6 @@ object FirebaseKeys {
     // Collections
     const val CAMPAIGNS_COLLECTION = "campaigns"
     const val DESIGNS_COLLECTION = "designs"
+    const val PRESENTATIONS_COLLECTION = "presentations"
 
 }

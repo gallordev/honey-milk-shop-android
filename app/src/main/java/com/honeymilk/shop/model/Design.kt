@@ -11,5 +11,6 @@ data class Design(
     val group: String = "",
     val imageURL: String = "",
     val userId: String = "",
+    val presentations : List<Presentation> = emptyList(),
     @ServerTimestamp val createdAt: Date = Date()
 )

@@ -8,6 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentHomeBinding
+import com.honeymilk.shop.model.Presentation
 import com.honeymilk.shop.ui.AuthStatusViewModel
 import com.honeymilk.shop.ui.auth.login.LoginFragment
 import com.honeymilk.shop.utils.BaseFragment

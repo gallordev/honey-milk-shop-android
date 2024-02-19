@@ -7,10 +7,12 @@ import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.honeymilk.shop.model.Design
+import com.honeymilk.shop.model.Presentation
 import com.honeymilk.shop.repository.AuthRepository
 import com.honeymilk.shop.repository.DesignRepository
 import com.honeymilk.shop.utils.FirebaseKeys.CREATED_AT_FIELD
 import com.honeymilk.shop.utils.FirebaseKeys.DESIGNS_COLLECTION
+import com.honeymilk.shop.utils.FirebaseKeys.PRESENTATIONS_COLLECTION
 import com.honeymilk.shop.utils.FirebaseKeys.USER_ID_FIELD
 import com.honeymilk.shop.utils.ImageCompressorHelper
 import com.honeymilk.shop.utils.Resource
@@ -75,8 +77,27 @@ class DesignRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun addDesignPresentations(
+        designId: String,
+        presentations: List<Presentation>
+    ): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+
+        val data: List<Map<String, Any>> = presentations.map { it.toMap() }
+
+        val docRef = firestore
+            .collection(DESIGNS_COLLECTION)
+            .document(designId)
+
+        docRef.update(PRESENTATIONS_COLLECTION, data).await()
+
+        emit(Resource.Success(designId))
+    }.catch {
+        emit(Resource.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
+
     private suspend fun submitDesignImage(imageByteArray: ByteArray): String {
-        val ref = storage.reference.child("designs/${UUID.randomUUID()}")
+        val ref = storage.reference.child("$DESIGNS_COLLECTION/${UUID.randomUUID()}")
         ref.putBytes(imageByteArray).await()
         val wea: Uri = ref.downloadUrl.await()
         return wea.toString()

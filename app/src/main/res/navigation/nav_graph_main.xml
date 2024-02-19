@@ -5,24 +5,6 @@
     android:id="@+id/nav_graph_main"
     app:startDestination="@id/homeFragment">
 
-<!--    <fragment-->
-<!--        android:id="@+id/newCampaignFragment"-->
-<!--        android:name="com.honeymilk.shop.ui.campaign.NewCampaignFragment"-->
-<!--        android:label="fragment_new_campaign"-->
-<!--        tools:layout="@layout/fragment_new_campaign" />-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/signUpFragment"-->
-<!--        android:name="com.honeymilk.shop.ui.sign_up.SignUpFragment"-->
-<!--        android:label="fragment_sign_up"-->
-<!--        tools:layout="@layout/fragment_sign_up" />-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/loginFragment"-->
-<!--        android:name="com.honeymilk.shop.ui.login.LoginFragment"-->
-<!--        android:label="fragment_login"-->
-<!--        tools:layout="@layout/fragment_login" />-->
-
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.honeymilk.shop.ui.home.HomeFragment"
@@ -66,5 +48,18 @@
         android:id="@+id/newDesignFragment"
         android:name="com.honeymilk.shop.ui.design.NewDesignFragment"
         android:label="fragment_new_design"
-        tools:layout="@layout/fragment_new_design" />
+        tools:layout="@layout/fragment_design_form" >
+        <action
+            android:id="@+id/action_newDesignFragment_to_newPresentationFragment"
+            app:destination="@id/newPresentationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPresentationFragment"
+        android:name="com.honeymilk.shop.ui.presentation.NewPresentationFragment"
+        android:label="fragment_new_presentation"
+        tools:layout="@layout/fragment_new_presentation" >
+        <argument
+            android:name="design_id"
+            app:argType="string" />
+    </fragment>
 </navigation>

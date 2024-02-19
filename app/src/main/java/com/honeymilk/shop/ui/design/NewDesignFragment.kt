@@ -9,18 +9,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.honeymilk.shop.databinding.FragmentNewDesignBinding
-import com.honeymilk.shop.model.Campaign
+import com.honeymilk.shop.databinding.FragmentDesignFormBinding
 import com.honeymilk.shop.model.Design
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
+import com.honeymilk.shop.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewDesignFragment : BaseFragment<FragmentNewDesignBinding>(FragmentNewDesignBinding::inflate) {
+class NewDesignFragment : BaseFragment<FragmentDesignFormBinding>(FragmentDesignFormBinding::inflate) {
 
     private var designImageURL: String = ""
+    private var designId: String = ""
     private val newDesignViewModel: NewDesignViewModel by viewModels()
     private val launcher: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
@@ -37,13 +38,15 @@ class NewDesignFragment : BaseFragment<FragmentNewDesignBinding>(FragmentNewDesi
                 val resource = it ?: return@observe
                 when(resource) {
                     is Resource.Error -> {
-                        btnSave.isEnabled = true
+                        handleLoadingState(isLoading = false)
                         showErrorMessage(resource.message ?: "Unknown Error")
                     }
                     is Resource.Loading -> {
-                        btnSave.isEnabled = false
+                        handleLoadingState(isLoading = true)
                     }
                     is Resource.Success -> {
+                        handleLoadingState(isLoading = false)
+                        designId = resource.data ?: ""
                         findNavController().popBackStack()
                     }
                 }
@@ -67,9 +70,15 @@ class NewDesignFragment : BaseFragment<FragmentNewDesignBinding>(FragmentNewDesi
                 name = textFieldName.getText(),
                 description = textFieldDescription.getText(),
                 group = menuGroup.getText(),
-                imageURL = designImageURL
+                imageURL = designImageURL,
+                presentations = presentationsGroup.getPresentationsData()
             )
         }
+    }
+
+    private fun handleLoadingState(isLoading: Boolean) {
+        binding.btnSave.hide(isLoading)
+        binding.progressIndicator.hide(!isLoading)
     }
 
 }

@@ -12,5 +12,12 @@
         <item>NCT Dream</item>
         <item>Stray Kids</item>
         <item>TXT</item>
+        <item>Twice</item>
+    </string-array>
+    <string-array name="array_presentations">
+        <item>Crewneck</item>
+        <item>Hoodie</item>
+        <item>T-Shirt</item>
+        <item>Crop Top</item>
     </string-array>
 </resources>

@@ -22,4 +22,16 @@
     <string name="btn_save">Save</string>
     <string name="btn_new_design">New Design</string>
     <string name="menu_group">Group</string>
+    <string name="title_add_new_presentations">Add new presentations</string>
+    <string name="message_add_new_presentations">Do you want to add different presentations (hoodie, crewneck, etc…) to this design? You can add them later.</string>
+    <string name="btn_later">Later</string>
+    <string name="btn_sure">Sure</string>
+    <string name="txt_crewneck">Crewneck</string>
+    <string name="txt_t_shirt">T-Shirt</string>
+    <string name="txt_hoodie">Hoodie</string>
+    <string name="txt_crop_top">Crop Top</string>
+    <string name="txt_all_presentations">All Presentations</string>
+    <string name="hint_price">Price</string>
+    <string name="prefix_price">$</string>
+    <string name="desc_design_image">Design Image</string>
 </resources>
