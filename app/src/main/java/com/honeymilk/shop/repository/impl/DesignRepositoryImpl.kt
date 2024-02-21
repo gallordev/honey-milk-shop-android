@@ -7,15 +7,11 @@ import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.honeymilk.shop.model.Design
-import com.honeymilk.shop.model.Presentation
 import com.honeymilk.shop.repository.AuthRepository
 import com.honeymilk.shop.repository.DesignRepository
-import com.honeymilk.shop.utils.FirebaseKeys
 import com.honeymilk.shop.utils.FirebaseKeys.CREATED_AT_FIELD
 import com.honeymilk.shop.utils.FirebaseKeys.DESIGNS_COLLECTION
-import com.honeymilk.shop.utils.FirebaseKeys.PRESENTATIONS_COLLECTION
 import com.honeymilk.shop.utils.FirebaseKeys.USERS_COLLECTION
-import com.honeymilk.shop.utils.FirebaseKeys.USER_ID_FIELD
 import com.honeymilk.shop.utils.ImageCompressorHelper
 import com.honeymilk.shop.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -32,8 +28,8 @@ import javax.inject.Inject
 class DesignRepositoryImpl @Inject constructor(
     private val auth: AuthRepository,
     private val firestore: FirebaseFirestore,
-    private val storage: FirebaseStorage,
-    private val imageCompressorHelper: ImageCompressorHelper
+    private val imageCompressorHelper: ImageCompressorHelper,
+    private val storage: FirebaseStorage
 ) : DesignRepository {
 
     private val collection
