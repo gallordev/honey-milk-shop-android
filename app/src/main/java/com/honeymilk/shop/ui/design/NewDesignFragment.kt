@@ -9,6 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.honeymilk.shop.databinding.FragmentDesignFormBinding
 import com.honeymilk.shop.model.Design
 import com.honeymilk.shop.utils.BaseFragment
@@ -27,7 +30,9 @@ class NewDesignFragment : BaseFragment<FragmentDesignFormBinding>(FragmentDesign
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             uri?.let {
                 designImageURL = it.toString()
-                Glide.with(requireContext()).load(it).into(binding.imageViewDesignImage)
+                Glide.with(requireContext())
+                    .load(it)
+                    .into(binding.imageViewDesignImage)
             }
         }
 

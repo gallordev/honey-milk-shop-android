@@ -10,9 +10,11 @@ import com.honeymilk.shop.model.Design
 import com.honeymilk.shop.model.Presentation
 import com.honeymilk.shop.repository.AuthRepository
 import com.honeymilk.shop.repository.DesignRepository
+import com.honeymilk.shop.utils.FirebaseKeys
 import com.honeymilk.shop.utils.FirebaseKeys.CREATED_AT_FIELD
 import com.honeymilk.shop.utils.FirebaseKeys.DESIGNS_COLLECTION
 import com.honeymilk.shop.utils.FirebaseKeys.PRESENTATIONS_COLLECTION
+import com.honeymilk.shop.utils.FirebaseKeys.USERS_COLLECTION
 import com.honeymilk.shop.utils.FirebaseKeys.USER_ID_FIELD
 import com.honeymilk.shop.utils.ImageCompressorHelper
 import com.honeymilk.shop.utils.Resource
@@ -34,18 +36,24 @@ class DesignRepositoryImpl @Inject constructor(
     private val imageCompressorHelper: ImageCompressorHelper
 ) : DesignRepository {
 
+    private val collection
+        get() = firestore.collection(USERS_COLLECTION)
+            .document(auth.currentUserId)
+            .collection(DESIGNS_COLLECTION)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override val designs: Flow<List<Design>>
         get() = auth.currentUser.flatMapLatest { user ->
-            firestore.collection(DESIGNS_COLLECTION)
-                .whereEqualTo(USER_ID_FIELD, user.id)
+            firestore.collection(USERS_COLLECTION)
+                .document(user.id)
+                .collection(DESIGNS_COLLECTION)
                 .orderBy(CREATED_AT_FIELD, Query.Direction.DESCENDING)
                 .dataObjects()
         }
 
     override suspend fun getDesign(designId: String): Flow<Resource<Design?>>  = flow {
         emit(Resource.Loading())
-        val data: Design? = firestore.collection(DESIGNS_COLLECTION)
+        val data: Design? = collection
             .document(designId).get().await()
             .toObject()
         emit(Resource.Success(data))
@@ -59,7 +67,7 @@ class DesignRepositoryImpl @Inject constructor(
         val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
         val imageUrl = submitDesignImage(compressedImageByteArray)
         val updatedDesign = design.copy(userId = auth.currentUserId, imageURL = imageUrl)
-        val data: String = firestore.collection(DESIGNS_COLLECTION).add(updatedDesign).await().id
+        val data: String = collection.add(updatedDesign).await().id
         emit(Resource.Success(data))
     }.catch {
         emit(Resource.Error(it.message.toString()))
@@ -67,7 +75,7 @@ class DesignRepositoryImpl @Inject constructor(
 
     override suspend fun updateDesign(design: Design): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
-        firestore.collection(DESIGNS_COLLECTION).document(design.id).set(design).await()
+        collection.document(design.id).set(design).await()
         emit(Resource.Success(design.id))
     }.catch {
         emit(Resource.Error(it.message.toString()))
@@ -77,31 +85,11 @@ class DesignRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun addDesignPresentations(
-        designId: String,
-        presentations: List<Presentation>
-    ): Flow<Resource<String>> = flow {
-        emit(Resource.Loading())
-
-        val data: List<Map<String, Any>> = presentations.map { it.toMap() }
-
-        val docRef = firestore
-            .collection(DESIGNS_COLLECTION)
-            .document(designId)
-
-        docRef.update(PRESENTATIONS_COLLECTION, data).await()
-
-        emit(Resource.Success(designId))
-    }.catch {
-        emit(Resource.Error(it.message.toString()))
-    }.flowOn(Dispatchers.IO)
-
     private suspend fun submitDesignImage(imageByteArray: ByteArray): String {
         val ref = storage.reference.child("$DESIGNS_COLLECTION/${UUID.randomUUID()}")
         ref.putBytes(imageByteArray).await()
         val wea: Uri = ref.downloadUrl.await()
         return wea.toString()
     }
-
 
 }

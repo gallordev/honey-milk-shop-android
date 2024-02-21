@@ -36,6 +36,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             btnNewDesign.setOnClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_newDesignFragment)
             }
+            btnDesignsList.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_designListFragment)
+            }
         }
 
     }

@@ -34,4 +34,5 @@
     <string name="hint_price">Price</string>
     <string name="prefix_price">$</string>
     <string name="desc_design_image">Design Image</string>
+    <string name="btn_designs_list">Designs List</string>
 </resources>

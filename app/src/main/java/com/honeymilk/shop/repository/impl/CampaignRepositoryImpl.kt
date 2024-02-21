@@ -9,6 +9,7 @@ import com.honeymilk.shop.repository.AuthRepository
 import com.honeymilk.shop.repository.CampaignRepository
 import com.honeymilk.shop.utils.FirebaseKeys.CAMPAIGNS_COLLECTION
 import com.honeymilk.shop.utils.FirebaseKeys.CREATED_AT_FIELD
+import com.honeymilk.shop.utils.FirebaseKeys.USERS_COLLECTION
 import com.honeymilk.shop.utils.FirebaseKeys.USER_ID_FIELD
 import com.honeymilk.shop.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -27,21 +28,23 @@ class CampaignRepositoryImpl @Inject constructor(
 ) : CampaignRepository {
 
     private val collection
-        get() = firestore.collection(CAMPAIGNS_COLLECTION)
-            .whereEqualTo(USER_ID_FIELD, auth.currentUserId)
+        get() = firestore.collection(USERS_COLLECTION)
+            .document(auth.currentUserId)
+            .collection(CAMPAIGNS_COLLECTION)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val campaigns: Flow<List<Campaign>>
         get() = auth.currentUser.flatMapLatest { user ->
-            firestore.collection(CAMPAIGNS_COLLECTION)
-                .whereEqualTo(USER_ID_FIELD, user.id)
+            firestore.collection(USERS_COLLECTION)
+                .document(user.id)
+                .collection(CAMPAIGNS_COLLECTION)
                 .orderBy(CREATED_AT_FIELD, Query.Direction.DESCENDING)
                 .dataObjects()
         }
 
     override suspend fun getCampaign(campaignId: String): Flow<Resource<Campaign?>> = flow {
             emit(Resource.Loading())
-            val data: Campaign? = firestore.collection(CAMPAIGNS_COLLECTION)
+            val data: Campaign? = collection
                 .document(campaignId).get().await()
                 .toObject()
             emit(Resource.Success(data))
@@ -52,7 +55,7 @@ class CampaignRepositoryImpl @Inject constructor(
     override suspend fun newCampaign(campaign: Campaign): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         val updatedCampaign = campaign.copy(userId = auth.currentUserId)
-        val data: String = firestore.collection(CAMPAIGNS_COLLECTION).add(updatedCampaign).await().id
+        val data: String = collection.add(updatedCampaign).await().id
         emit(Resource.Success(data))
     }.catch {
         emit(Resource.Error(it.message.toString()))

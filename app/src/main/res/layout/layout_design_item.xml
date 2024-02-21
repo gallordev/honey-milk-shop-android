@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.honeymilk.shop.model.Design" />
+
+        <variable
+            name="design"
+            type="Design" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/design_image"
+                app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="#BCB8B8"
+                app:imageFromUrl="@{design.imageURL}"
+                android:contentDescription="@string/desc_design_image"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/design_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@{design.name +  ` • ` + design.group}"
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

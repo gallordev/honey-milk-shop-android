@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_newDesignFragment"
             app:destination="@id/newDesignFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_designListFragment"
+            app:destination="@id/designListFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -48,18 +51,10 @@
         android:id="@+id/newDesignFragment"
         android:name="com.honeymilk.shop.ui.design.NewDesignFragment"
         android:label="fragment_new_design"
-        tools:layout="@layout/fragment_design_form" >
-        <action
-            android:id="@+id/action_newDesignFragment_to_newPresentationFragment"
-            app:destination="@id/newPresentationFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_design_form" />
     <fragment
-        android:id="@+id/newPresentationFragment"
-        android:name="com.honeymilk.shop.ui.presentation.NewPresentationFragment"
-        android:label="fragment_new_presentation"
-        tools:layout="@layout/fragment_new_presentation" >
-        <argument
-            android:name="design_id"
-            app:argType="string" />
-    </fragment>
+        android:id="@+id/designListFragment"
+        android:name="com.honeymilk.shop.ui.design.DesignListFragment"
+        android:label="fragment_design_list"
+        tools:layout="@layout/fragment_design_list" />
 </navigation>
