@@ -23,6 +23,6 @@ object FirebaseModule {
     fun firestore(): FirebaseFirestore = Firebase.firestore
 
     @Provides
-    fun storage( ): FirebaseStorage = Firebase.storage
+    fun storage(): FirebaseStorage = Firebase.storage
 
 }

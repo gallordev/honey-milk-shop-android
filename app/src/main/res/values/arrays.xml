@@ -15,9 +15,25 @@
         <item>Twice</item>
     </string-array>
     <string-array name="array_presentations">
-        <item>Crewneck</item>
-        <item>Hoodie</item>
-        <item>T-Shirt</item>
-        <item>Crop Top</item>
+        <item>@string/txt_crewneck</item>
+        <item>@string/txt_hoodie</item>
+        <item>@string/txt_t_shirt</item>
+        <item>@string/txt_crop_top</item>
+    </string-array>
+    <string-array name="array_sizes">
+        <item>@string/txt_small</item>
+        <item>@string/txt_medium</item>
+        <item>@string/txt_large</item>
+        <item>@string/txt_extra_large</item>
+    </string-array>
+    <string-array name="array_colors">
+        <item>@string/txt_color_black</item>
+        <item>@string/txt_color_light_brown</item>
+        <item>@string/txt_color_white</item>
+        <item>@string/txt_color_sand</item>
+        <item>@string/txt_color_pink</item>
+        <item>@string/txt_color_lilac</item>
+        <item>@string/txt_color_gray</item>
+        <item>@string/txt_color_navy_blue</item>
     </string-array>
 </resources>

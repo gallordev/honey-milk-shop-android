@@ -27,4 +27,16 @@
         android:layout_height="wrap_content"
         android:text="@string/btn_designs_list" />
 
+    <Button
+        android:id="@+id/btn_designs_list_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Designs Dialog" />
+
+    <Button
+        android:id="@+id/btn_new_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Order" />
+
 </LinearLayout>

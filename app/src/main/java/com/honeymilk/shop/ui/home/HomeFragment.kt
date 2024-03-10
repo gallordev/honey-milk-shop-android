@@ -2,6 +2,7 @@ package com.honeymilk.shop.ui.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
@@ -11,6 +12,7 @@ import com.honeymilk.shop.databinding.FragmentHomeBinding
 import com.honeymilk.shop.model.Presentation
 import com.honeymilk.shop.ui.AuthStatusViewModel
 import com.honeymilk.shop.ui.auth.login.LoginFragment
+import com.honeymilk.shop.ui.design.DesignListDialogFragment
 import com.honeymilk.shop.utils.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,8 +41,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             btnDesignsList.setOnClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_designListFragment)
             }
-        }
+            btnDesignsListDialog.setOnClickListener {
+                val dialog = DesignListDialogFragment()
 
+                val transaction = childFragmentManager.beginTransaction()
+
+                dialog.show(transaction, dialog.tag)
+
+            }
+            btnNewOrder.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_newOrderFragment)
+            }
+        }
     }
 
 }

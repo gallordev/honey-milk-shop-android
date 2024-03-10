@@ -48,14 +48,14 @@ class CampaignRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getCampaign(campaignId: String): Flow<Resource<Campaign?>> = flow {
-            emit(Resource.Loading())
-            val data: Campaign? = collection
-                .document(campaignId).get().await()
-                .toObject()
-            emit(Resource.Success(data))
-        }.catch {
-            emit(Resource.Error(it.message.toString()))
-        }.flowOn(Dispatchers.IO)
+        emit(Resource.Loading())
+        val data: Campaign? = collection
+            .document(campaignId).get().await()
+            .toObject()
+        emit(Resource.Success(data))
+    }.catch {
+        emit(Resource.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun newCampaign(campaign: Campaign): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
@@ -69,13 +69,21 @@ class CampaignRepositoryImpl @Inject constructor(
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun updateCampaign(campaign: Campaign): Flow<Resource<String>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun updateCampaign(campaign: Campaign): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        collection.document(campaign.id).set(campaign).await()
+        emit(Resource.Success(campaign.id))
+    }.catch {
+        emit(Resource.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 
-    override suspend fun deleteCampaign(campaignId: String): Flow<Resource<String>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteCampaign(campaignId: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        collection.document(campaignId).delete()
+        emit(Resource.Success(campaignId))
+    }.catch {
+        emit(Resource.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 
     private suspend fun submitCampaignImage(imageByteArray: ByteArray): String {
         val ref = storage.reference.child("${CAMPAIGNS_COLLECTION}/${UUID.randomUUID()}")

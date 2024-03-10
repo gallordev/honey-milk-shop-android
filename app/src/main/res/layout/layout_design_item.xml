@@ -13,10 +13,14 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/design_card"
         style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:checkable="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout

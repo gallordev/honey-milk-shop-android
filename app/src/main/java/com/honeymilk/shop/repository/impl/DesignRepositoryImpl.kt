@@ -77,9 +77,13 @@ class DesignRepositoryImpl @Inject constructor(
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun deleteDesign(designId: String): Flow<Resource<String>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteDesign(designId: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        collection.document(designId).delete()
+        emit(Resource.Success(designId))
+    }.catch {
+        emit(Resource.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 
     private suspend fun submitDesignImage(imageByteArray: ByteArray): String {
         val ref = storage.reference.child("$DESIGNS_COLLECTION/${UUID.randomUUID()}")

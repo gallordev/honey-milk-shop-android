@@ -2,8 +2,10 @@ package com.honeymilk.shop.ui.design
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
+import com.google.android.material.card.MaterialCardView
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.LayoutDesignItemBinding
 import com.honeymilk.shop.model.Design
@@ -12,7 +14,7 @@ import com.honeymilk.shop.ui.common.DataBoundViewHolder
 import java.util.concurrent.Executor
 
 class DesignsAdapter(
-    private val clickCallback: ((Design) -> Unit)?
+    private val clickCallback: ((Design, MaterialCardView) -> Unit)?
 ) : DataBoundListAdapter<Design, LayoutDesignItemBinding>(
     diffCallback = object : DiffUtil.ItemCallback<Design>() {
         override fun areItemsTheSame(oldItem: Design, newItem: Design) =
@@ -31,7 +33,7 @@ class DesignsAdapter(
             false
         ).apply {
             root.setOnClickListener {
-                design?.let { design -> clickCallback?.invoke(design) }
+                design?.let { design -> clickCallback?.invoke(design, designCard) }
             }
         }
 
