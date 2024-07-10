@@ -16,6 +16,7 @@ data class Order(
     val shippingCompany: String = "",
     val shippingPrice: Float = 0f,
     val isShippingPaid: Boolean = false,
+    val trackingCode: String = "",
     @ServerTimestamp val createdAt: Date = Date()
 ) {
     @Exclude

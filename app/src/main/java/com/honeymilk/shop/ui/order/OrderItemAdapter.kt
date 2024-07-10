@@ -12,18 +12,7 @@ import com.honeymilk.shop.ui.common.DataBoundListAdapter
 
 class OrderItemAdapter(
     private val updateOrderItem: ((OrderItem, Boolean) -> Unit)? = null
-) : DataBoundListAdapter<OrderItem, LayoutOrderItemFormBinding>(
-    diffCallback = object : DiffUtil.ItemCallback<OrderItem>() {
-        override fun areItemsTheSame(oldItem: OrderItem, newItem: OrderItem) =
-            oldItem.design.id == newItem.design.id
-
-        override fun areContentsTheSame(oldItem: OrderItem, newItem: OrderItem) =
-            oldItem.quantity == newItem.quantity
-                    && oldItem.size == newItem.size
-                    && oldItem.type == newItem.type
-                    && oldItem.color == newItem.color
-    }
-) {
+) : DataBoundListAdapter<OrderItem, LayoutOrderItemFormBinding>(OrderItemDiffCallback()) {
     override fun createBinding(parent: ViewGroup): LayoutOrderItemFormBinding = DataBindingUtil
         .inflate<LayoutOrderItemFormBinding?>(
             LayoutInflater.from(parent.context),
@@ -44,10 +33,19 @@ class OrderItemAdapter(
             (menuType.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(typeItems)
             btnAdd.setOnClickListener {
                 updateOrderItem?.invoke(item, true)
+
             }
             btnRemove.setOnClickListener {
                 updateOrderItem?.invoke(item, false)
+
             }
+        }
+    }
+
+    fun updateList(list: MutableList<OrderItem>?) {
+        list?.let {
+            val newList = ArrayList<OrderItem>(list)
+            submitList(newList)
         }
     }
 

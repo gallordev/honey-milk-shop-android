@@ -58,5 +58,14 @@
     <string name="desc_remove_button">remove button</string>
     <string name="btn_add">Add</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="txt_order_items">Order Items</string>
+    <string name="txt_order_extras">Order Extras</string>
+    <string name="hint_add_extras">Add Extras</string>
+    <string name="hint_address">Address</string>
+    <string name="txt_shipment_info">Shipment Info</string>
+    <string name="hint_shiping_company">Shiping Company</string>
+    <string name="hint_shipping_price">Shipping Price</string>
+    <string name="hint_tracking_code">Tracking Code</string>
+    <string name="switch_shipping_paid">Shipping Paid</string>
 
 </resources>

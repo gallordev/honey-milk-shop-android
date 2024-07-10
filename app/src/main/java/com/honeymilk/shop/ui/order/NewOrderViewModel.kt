@@ -22,12 +22,8 @@ class NewOrderViewModel @Inject constructor() : ViewModel() {
         _orderItems.value = newOrderItems
     }
 
-    fun updateOrderItem(orderItem: OrderItem, increase: Boolean) {
-        val items = _orderItems.value ?: return
-        items.find { it.id == orderItem.id }?.apply {
-            if (increase) increaseQuantity() else decreaseQuantity()
-        } ?: return
-        _orderItems.value = items
+    fun removeOrderItem(orderItem: OrderItem) {
+        _orderItems.value = _orderItems.value?.dropWhile { it.id == orderItem.id }
     }
 
 }
