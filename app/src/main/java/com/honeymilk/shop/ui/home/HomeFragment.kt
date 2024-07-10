@@ -52,6 +52,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             btnNewOrder.setOnClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_newOrderFragment)
             }
+            btnCampaignList.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_campaignListFragment)
+            }
         }
     }
 

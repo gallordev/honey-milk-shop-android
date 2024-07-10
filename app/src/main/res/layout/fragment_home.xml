@@ -39,4 +39,10 @@
         android:layout_height="wrap_content"
         android:text="New Order" />
 
+    <Button
+        android:id="@+id/btn_campaign_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Campaign List" />
+
 </LinearLayout>
