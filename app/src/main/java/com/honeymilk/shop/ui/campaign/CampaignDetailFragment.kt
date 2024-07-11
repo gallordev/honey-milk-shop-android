@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentCampaignDetailBinding
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
@@ -47,6 +47,13 @@ class CampaignDetailFragment :
                     showErrorMessage(resource.message)
                 }
             }
+        }
+        binding.btnNewOrder.setOnClickListener {
+            findNavController().navigate(
+                CampaignDetailFragmentDirections.actionCampaignDetailFragmentToNewOrderFragment(
+                    args.campaignId
+                )
+            )
         }
     }
 

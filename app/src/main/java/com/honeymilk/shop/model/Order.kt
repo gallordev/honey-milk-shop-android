@@ -13,6 +13,7 @@ data class Order(
     val customer: Customer = Customer(),
     val items: List<OrderItem> = emptyList(),
     val extras: String = "",
+    val extrasTotal: Float = 0f,
     val shippingCompany: String = "",
     val shippingPrice: Float = 0f,
     val isShippingPaid: Boolean = false,

@@ -10,8 +10,7 @@ import kotlin.random.Random
 
 @IgnoreExtraProperties
 data class OrderItem(
-    @Exclude
-    val id: Int = abs((0..999999999999).random()).toInt() ,
+    @Exclude val id: Int = abs((0..999999999999).random()).toInt() ,
     var design: Design = Design(),
     var color: String = "",
     var type: String = "",

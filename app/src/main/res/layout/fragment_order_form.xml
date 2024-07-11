@@ -241,6 +241,25 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField_extras_total"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:hint="@string/hint_extras_total"
+            app:endIconMode="clear_text"
+            app:layout_constraintTop_toBottomOf="@id/textField_extras"
+            app:prefixText="@string/prefix_price">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/btn_save"
             style="@style/Widget.Material3.Button.TonalButton"
@@ -248,7 +267,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
             android:text="@string/btn_save"
-            app:layout_constraintTop_toBottomOf="@id/textField_extras" />
+            app:layout_constraintTop_toBottomOf="@id/textField_extras_total" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

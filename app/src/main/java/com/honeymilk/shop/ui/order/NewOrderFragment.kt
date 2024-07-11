@@ -3,9 +3,12 @@ package com.honeymilk.shop.ui.order
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.honeymilk.shop.R
@@ -16,12 +19,14 @@ import com.honeymilk.shop.model.Order
 import com.honeymilk.shop.model.OrderItem
 import com.honeymilk.shop.ui.design.DesignListDialogFragment
 import com.honeymilk.shop.utils.BaseFragment
+import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFormBinding::inflate) {
 
+    private val args: NewOrderFragmentArgs by navArgs()
     private val newOrderViewModel: NewOrderViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,11 +36,28 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
             println(orderItems)
             buildOrderItems(orderItems)
         }
+        newOrderViewModel.resource.observe(viewLifecycleOwner) {
+            val resource = it ?: return@observe
+            when(resource) {
+                is Resource.Loading -> {
+                    binding.btnSave.isEnabled = false
+                }
+                is Resource.Error -> {
+                    binding.btnSave.isEnabled = true
+                    showErrorMessage(resource.message)
+                }
+                is Resource.Success -> {
+                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                }
+            }
+        }
         binding.btnAddOrderItem.setOnClickListener {
             dialog.show(childFragmentManager, dialog.tag)
         }
         binding.btnSave.setOnClickListener {
-            println(buildOrder())
+            val order = buildOrder()
+            newOrderViewModel.newOrder(args.campaignId, order)
         }
     }
 
@@ -50,6 +72,7 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
                 ),
                 items = newOrderViewModel.orderItems.value ?: emptyList(),
                 extras = textFieldExtras.getText(),
+                extrasTotal = textFieldExtrasTotal.getText().toFloat(),
                 shippingCompany = textFieldShippingCompany.getText(),
                 shippingPrice = textFieldShippingPrice.getText().toFloat(),
                 isShippingPaid = switchShippingPaid.isChecked,

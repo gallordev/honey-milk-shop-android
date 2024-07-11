@@ -20,9 +20,6 @@
             android:id="@+id/action_homeFragment_to_designListFragment"
             app:destination="@id/designListFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_newOrderFragment"
-            app:destination="@id/newOrderFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_campaignListFragment"
             app:destination="@id/campaignListFragment" />
     </fragment>
@@ -67,7 +64,11 @@
         android:id="@+id/newOrderFragment"
         android:name="com.honeymilk.shop.ui.order.NewOrderFragment"
         android:label="fragment_order_form"
-        tools:layout="@layout/fragment_order_form" />
+        tools:layout="@layout/fragment_order_form" >
+        <argument
+            android:name="campaignId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/campaignListFragment"
         android:name="com.honeymilk.shop.ui.campaign.CampaignListFragment"
@@ -85,5 +86,8 @@
         <argument
             android:name="campaignId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_campaignDetailFragment_to_newOrderFragment"
+            app:destination="@id/newOrderFragment" />
     </fragment>
 </navigation>
