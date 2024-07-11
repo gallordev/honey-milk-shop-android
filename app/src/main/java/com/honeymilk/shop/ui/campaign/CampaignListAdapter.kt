@@ -14,18 +14,17 @@ class CampaignListAdapter(
     CampaignDiffCallback()
 ) {
     override fun createBinding(parent: ViewGroup): LayoutCampaignItemBinding = DataBindingUtil
-        .inflate<LayoutCampaignItemBinding?>(
+        .inflate(
             LayoutInflater.from(parent.context),
             R.layout.layout_campaign_item,
             parent,
             false
-        ).apply {
-            campaign?.let { campaign ->
-
-            }
-        }
+        )
 
     override fun bind(binding: LayoutCampaignItemBinding, item: Campaign) {
         binding.campaign = item
+        binding.campaignCard.setOnClickListener {
+            onCampaignClick?.invoke(item)
+        }
     }
 }

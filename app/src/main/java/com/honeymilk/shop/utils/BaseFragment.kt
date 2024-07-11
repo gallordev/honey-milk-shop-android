@@ -33,8 +33,12 @@ abstract class BaseFragment<VB : ViewBinding>(
         _binding = null
     }
 
-    fun showErrorMessage(errorMessage: String) {
-        Snackbar.make(binding.root, "Error: $errorMessage", Snackbar.LENGTH_SHORT).show()
+    fun showErrorMessage(errorMessage: String?) {
+        Snackbar.make(
+            binding.root,
+            "Error: ${errorMessage ?: "Unknown Error"}",
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
 }

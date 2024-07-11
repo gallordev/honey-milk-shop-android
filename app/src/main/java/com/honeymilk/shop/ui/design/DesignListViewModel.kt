@@ -6,15 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.honeymilk.shop.model.Design
 import com.honeymilk.shop.repository.DesignRepository
-import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DesignListViewModel @Inject constructor(
-    private val designsRepository: DesignRepository
+    private val designRepository: DesignRepository
 ) : ViewModel() {
 
     private val _designs = MutableLiveData<List<Design>>(null)
@@ -23,7 +21,7 @@ class DesignListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            designsRepository.designs.collect {
+            designRepository.designs.collect {
                 _designs.value = it
             }
         }
