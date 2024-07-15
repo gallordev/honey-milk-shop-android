@@ -1,51 +1,30 @@
 package com.honeymilk.shop.ui.order
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.honeymilk.shop.R
-import com.honeymilk.shop.databinding.LayoutOrderItemFormBinding
+import com.honeymilk.shop.databinding.LayoutOrderItemItemBinding
 import com.honeymilk.shop.model.OrderItem
 import com.honeymilk.shop.ui.common.DataBoundListAdapter
+import com.honeymilk.shop.utils.Extensions.toCurrencyFormat
 
-class OrderItemAdapter(
-    private val updateOrderItem: ((OrderItem, Boolean) -> Unit)? = null
-) : DataBoundListAdapter<OrderItem, LayoutOrderItemFormBinding>(OrderItemDiffCallback()) {
-    override fun createBinding(parent: ViewGroup): LayoutOrderItemFormBinding = DataBindingUtil
-        .inflate<LayoutOrderItemFormBinding?>(
+class OrderItemAdapter : DataBoundListAdapter<OrderItem, LayoutOrderItemItemBinding>(OrderItemDiffCallback()) {
+    override fun createBinding(parent: ViewGroup): LayoutOrderItemItemBinding = DataBindingUtil
+        .inflate(
             LayoutInflater.from(parent.context),
-            R.layout.layout_order_item_form,
+            R.layout.layout_order_item_item,
             parent,
             false
-        ).apply {
-            orderItem?.let { item ->
+        )
 
-            }
-        }
-
-    override fun bind(binding: LayoutOrderItemFormBinding, item: OrderItem) {
+    @SuppressLint("SetTextI18n")
+    override fun bind(binding: LayoutOrderItemItemBinding, item: OrderItem) {
         with(binding) {
             orderItem = item
-            val typeItems: Array<String> = item.design.presentations
-                .map { it.name }.toTypedArray()
-            (menuType.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(typeItems)
-            btnAdd.setOnClickListener {
-                updateOrderItem?.invoke(item, true)
-
-            }
-            btnRemove.setOnClickListener {
-                updateOrderItem?.invoke(item, false)
-
-            }
-        }
-    }
-
-    fun updateList(list: MutableList<OrderItem>?) {
-        list?.let {
-            val newList = ArrayList<OrderItem>(list)
-            submitList(newList)
+            txtDesignPrice.text = "${item.getTypePrice().toCurrencyFormat()} x ${item.quantity}"
+            txtDesignTotal.text = item.getItemTotal().toCurrencyFormat()
         }
     }
 

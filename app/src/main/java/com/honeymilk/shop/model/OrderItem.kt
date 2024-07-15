@@ -2,11 +2,8 @@ package com.honeymilk.shop.model
 
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.util.UUID
+import com.honeymilk.shop.utils.Extensions.toCurrencyFormat
 import kotlin.math.abs
-import kotlin.random.Random
 
 @IgnoreExtraProperties
 data class OrderItem(
@@ -31,5 +28,11 @@ data class OrderItem(
             quantity -= 1
         }
     }
+
+    @Exclude
+    fun getTypePrice(): Float = design.presentations.find { it.name == type }?.price ?: 0f
+
+    @Exclude
+    fun getItemTotal(): Float = getTypePrice().times(quantity)
 
 }

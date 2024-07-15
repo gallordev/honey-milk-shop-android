@@ -23,6 +23,9 @@ class OrderListAdapter(
 
     override fun bind(binding: LayoutItemOrderBinding, item: Order) {
         binding.order = item
+        binding.orderCard.setOnClickListener {
+            onCampaignClick?.invoke(item)
+        }
     }
 
 }

@@ -6,7 +6,6 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
-
 @IgnoreExtraProperties
 data class Order(
     @DocumentId val id: String = "",
@@ -20,13 +19,20 @@ data class Order(
     val trackingCode: String = "",
     @ServerTimestamp val createdAt: Date = Date()
 ) {
+
     @Exclude
-    fun getSubtotal(): Float {
-        return 0f
+    fun getOrderItemsTotal(): Float {
+        var total = 0f
+        items.forEach { orderItem ->
+            total += orderItem.getItemTotal()
+        }
+        return total
     }
 
     @Exclude
-    fun getTotal(): Float {
-        return 0f
-    }
+    fun getTotal(): Float = 0F
+        .plus(getOrderItemsTotal())
+        .plus(extrasTotal)
+        .plus(shippingPrice)
+
 }

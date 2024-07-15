@@ -29,9 +29,14 @@ class MainActivity : AppCompatActivity() {
         mNavController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(mNavController.graph)
         mBinding.topAppBar.setupWithNavController(mNavController, appBarConfiguration)
+        val authDestinations = listOf(
+            R.id.loginFragment,
+            R.id.signUpFragment,
+            R.id.passwordRecoveryFragment
+        )
         mAuthViewModel.currentUser.observe(this) { signedUser ->
             signedUser?.let {
-                if (mNavController.currentDestination?.id != R.id.homeFragment) {
+                if (authDestinations.contains(mNavController.currentDestination?.id)) {
                     val startDestination = mNavController.graph.startDestinationId
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(startDestination, true)

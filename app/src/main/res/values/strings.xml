@@ -73,5 +73,8 @@
     <string name="txt_campaign_status">This campaign is currently active</string>
     <string name="btn_new_order">New Order</string>
     <string name="hint_extras_total">Extras Total</string>
+    <string name="txt_order_items_subtotal">Order Items Subtotal:</string>
+    <string name="txt_order_extras_subtotal">Order Extras Subtotal:</string>
+    <string name="txt_total">Total</string>
 
 </resources>
