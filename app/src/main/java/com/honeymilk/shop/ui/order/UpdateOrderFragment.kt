@@ -3,13 +3,11 @@ package com.honeymilk.shop.ui.order
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentOrderFormBinding
@@ -22,21 +20,39 @@ import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
 import com.honeymilk.shop.utils.hide
+import com.honeymilk.shop.utils.setText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFormBinding::inflate) {
+class UpdateOrderFragment :
+    BaseFragment<FragmentOrderFormBinding>(FragmentOrderFormBinding::inflate) {
 
-    private val args: NewOrderFragmentArgs by navArgs()
-    private val newOrderViewModel: NewOrderViewModel by viewModels()
+    private val args: UpdateOrderFragmentArgs by navArgs()
+    private val orderDetailViewModel: OrderDetailViewModel by viewModels()
+    private val updateOrderViewModel: UpdateOrderViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val dialog = DesignListDialogFragment(newOrderViewModel::addOrderItems)
-        newOrderViewModel.orderItems.observe(viewLifecycleOwner) {
+        val dialog = DesignListDialogFragment(updateOrderViewModel::addOrderItems)
+        orderDetailViewModel.getOrder(args.campaignId, args.orderId)
+        orderDetailViewModel.order.observe(viewLifecycleOwner) {
+            val resource = it ?: return@observe
+            if (resource is Resource.Success) {
+                resource.data?.let { order ->
+                    loadForm(order)
+                    updateOrderViewModel.setOrderItems(order.items)
+                }
+            }
+        }
+        updateOrderViewModel.orderItems.observe(viewLifecycleOwner) {
             val orderItems = it ?: return@observe
-            println(orderItems)
             buildOrderItems(orderItems)
         }
-        newOrderViewModel.resource.observe(viewLifecycleOwner) {
+        binding.btnAddOrderItem.setOnClickListener {
+            dialog.show(childFragmentManager, dialog.tag)
+        }
+        binding.btnSave.setOnClickListener {
+            updateOrderViewModel.updateOrder(args.campaignId, buildOrder())
+        }
+        updateOrderViewModel.resource.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
             when (resource) {
                 is Resource.Loading -> {
@@ -50,41 +66,9 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
 
                 is Resource.Success -> {
                     handleLoadingState(isLoading = false)
-                    findNavController().navigate(
-                        NewOrderFragmentDirections.actionNewOrderFragmentToOrderDetailFragment(
-                            args.campaignId,
-                            resource.data ?: ""
-                        )
-                    )
+                    findNavController().popBackStack()
                 }
             }
-        }
-        binding.btnAddOrderItem.setOnClickListener {
-            dialog.show(childFragmentManager, dialog.tag)
-        }
-        binding.btnSave.setOnClickListener {
-            val order = buildOrder()
-            newOrderViewModel.newOrder(args.campaignId, order)
-        }
-    }
-
-    private fun buildOrder(): Order {
-        with(binding) {
-            return Order(
-                customer = Customer(
-                    textFieldName.getText(),
-                    textFieldEmail.getText(),
-                    textFieldAddress.getText(),
-                    textFieldPhoneNumber.getText()
-                ),
-                items = newOrderViewModel.orderItems.value ?: emptyList(),
-                extras = textFieldExtras.getText(),
-                extrasTotal = textFieldExtrasTotal.getText().toFloat(),
-                shippingCompany = textFieldShippingCompany.getText(),
-                shippingPrice = textFieldShippingPrice.getText().toFloat(),
-                isShippingPaid = switchShippingPaid.isChecked,
-                trackingCode = textFieldTrackingCode.getText()
-            )
         }
     }
 
@@ -93,6 +77,21 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
             if (!binding.layoutOrderItems.children.any { it.id == item.id }) {
                 buildOrderItem(item)
             }
+        }
+    }
+
+    private fun loadForm(order: Order) {
+        with(binding) {
+            textFieldName.setText(order.customer.name)
+            textFieldEmail.setText(order.customer.email)
+            textFieldPhoneNumber.setText(order.customer.phoneNumber)
+            textFieldAddress.setText(order.customer.address)
+            textFieldShippingCompany.setText(order.shippingCompany)
+            textFieldShippingPrice.setText(order.shippingPrice)
+            switchShippingPaid.isChecked
+            textFieldTrackingCode.setText(order.trackingCode)
+            textFieldExtras.setText(order.extras)
+            textFieldExtrasTotal.setText(order.extrasTotal)
         }
     }
 
@@ -110,18 +109,21 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
 
             (menuType.editText as? MaterialAutoCompleteTextView)?.apply {
                 setSimpleItems(typeItems)
+                setText(orderItem.type)
                 setOnItemClickListener { _, _, position, _ ->
                     orderItem.type = typeItems[position]
                 }
             }
 
             (menuColor.editText as? MaterialAutoCompleteTextView)?.apply {
+                setText(orderItem.color)
                 setOnItemClickListener { _, view, _, _ ->
                     orderItem.color = (view as TextView).text.toString()
                 }
             }
 
             (menuSize.editText as? MaterialAutoCompleteTextView)?.apply {
+                setText(orderItem.size)
                 setOnItemClickListener { _, view, _, _ ->
                     orderItem.size = (view as TextView).text.toString()
                 }
@@ -142,9 +144,29 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
                     val view = children.find { it.id == orderItem.id }
                     removeView(view)
                 }
-                newOrderViewModel.removeOrderItem(orderItem)
-                println(newOrderViewModel.orderItems.value)
+                updateOrderViewModel.removeOrderItem(orderItem)
             }
+        }
+    }
+
+    private fun buildOrder(): Order {
+        with(binding) {
+            return Order(
+                id = args.orderId,
+                customer = Customer(
+                    textFieldName.getText(),
+                    textFieldEmail.getText(),
+                    textFieldAddress.getText(),
+                    textFieldPhoneNumber.getText()
+                ),
+                items = updateOrderViewModel.orderItems.value ?: emptyList(),
+                extras = textFieldExtras.getText(),
+                extrasTotal = textFieldExtrasTotal.getText().toFloat(),
+                shippingCompany = textFieldShippingCompany.getText(),
+                shippingPrice = textFieldShippingPrice.getText().toFloat(),
+                isShippingPaid = switchShippingPaid.isChecked,
+                trackingCode = textFieldTrackingCode.getText()
+            )
         }
     }
 

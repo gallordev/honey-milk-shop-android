@@ -8,5 +8,5 @@ class OrderDiffCallback: DiffUtil.ItemCallback<Order>() {
         oldItem.id == newItem.id
 
     override fun areContentsTheSame(oldItem: Order, newItem: Order): Boolean =
-        oldItem.customer == newItem.customer
+        oldItem.getTotal() == newItem.getTotal()
 }

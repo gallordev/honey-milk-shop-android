@@ -14,6 +14,7 @@ import com.honeymilk.shop.ui.AuthStatusViewModel
 import com.honeymilk.shop.ui.auth.login.LoginFragment
 import com.honeymilk.shop.ui.design.DesignListDialogFragment
 import com.honeymilk.shop.utils.BaseFragment
+import com.honeymilk.shop.utils.isGone
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +29,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val user = it ?: return@observe
             if (user.id.isBlank()) {
                 findNavController().navigate(R.id.loginFragment)
+            } else {
+                binding.homeView.isGone(false)
             }
         }
 
@@ -54,6 +57,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
             btnCampaignList.setOnClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_campaignListFragment)
+            }
+            btnLogout.setOnClickListener {
+                viewModel.logout()
             }
         }
     }

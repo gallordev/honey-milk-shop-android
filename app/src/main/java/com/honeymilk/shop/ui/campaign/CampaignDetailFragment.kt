@@ -22,14 +22,24 @@ class CampaignDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         campaignDetailViewModel.getCampaign(args.campaignId)
-        adapter = OrderListAdapter {
-            findNavController().navigate(
-                CampaignDetailFragmentDirections.actionCampaignDetailFragmentToOrderDetailFragment(
-                    args.campaignId,
-                    it.id
+        adapter = OrderListAdapter(
+            onOrderClick = {
+                findNavController().navigate(
+                    CampaignDetailFragmentDirections.actionCampaignDetailFragmentToOrderDetailFragment(
+                        args.campaignId,
+                        it.id
+                    )
                 )
-            )
-        }
+            },
+            onEditClick = {
+                findNavController().navigate(
+                    CampaignDetailFragmentDirections.actionCampaignDetailFragmentToUpdateOrderFragment(
+                        args.campaignId,
+                        it.id
+                    )
+                )
+            }
+        )
         binding.recyclerViewOrderList.adapter = adapter
         campaignDetailViewModel.campaign.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.honeymilk.shop.model.Order
+import com.honeymilk.shop.model.OrderItem
 import com.honeymilk.shop.repository.OrderRepository
 import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

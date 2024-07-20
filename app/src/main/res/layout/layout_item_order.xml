@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_4dp"
+        android:animateLayoutChanges="true"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,6 +26,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical">
 
             <TextView
@@ -36,21 +38,45 @@
                 android:ellipsize="end"
                 android:text="@{order.customer.name}"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/order_total"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@id/btn_edit"/>
 
             <TextView
                 android:id="@+id/order_total"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_16dp"
-                android:text="@{`$` + order.total}"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_edit"
+                style="@style/Widget.Material3.Button.TextButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_edit_order"
+                app:icon="@android:drawable/ic_menu_edit"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_delete"
+                app:layout_constraintTop_toBottomOf="@id/order_customer_name" />
+
+            <Button
+                android:id="@+id/btn_delete"
+                style="@style/Widget.Material3.Button.TextButton.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_delete_order"
+                app:icon="@android:drawable/ic_menu_delete"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/btn_edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/order_customer_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -21,4 +21,10 @@ class AuthStatusViewModel @Inject constructor(
     val currentUser: LiveData<User>
         get() = _currentUser
 
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
+    }
+
 }
