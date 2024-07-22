@@ -109,21 +109,21 @@ class UpdateOrderFragment :
 
             (menuType.editText as? MaterialAutoCompleteTextView)?.apply {
                 setSimpleItems(typeItems)
-                setText(orderItem.type)
+                setText(orderItem.type, false)
                 setOnItemClickListener { _, _, position, _ ->
                     orderItem.type = typeItems[position]
                 }
             }
 
             (menuColor.editText as? MaterialAutoCompleteTextView)?.apply {
-                setText(orderItem.color)
+                setText(orderItem.color, false)
                 setOnItemClickListener { _, view, _, _ ->
                     orderItem.color = (view as TextView).text.toString()
                 }
             }
 
             (menuSize.editText as? MaterialAutoCompleteTextView)?.apply {
-                setText(orderItem.size)
+                setText(orderItem.size, false)
                 setOnItemClickListener { _, view, _, _ ->
                     orderItem.size = (view as TextView).text.toString()
                 }
@@ -140,6 +140,7 @@ class UpdateOrderFragment :
             }
 
             btnDeleteItem.setOnClickListener {
+                println("root.id -> ${root.id}, item.id -> ${orderItem.id}")
                 binding.layoutOrderItems.apply {
                     val view = children.find { it.id == orderItem.id }
                     removeView(view)
