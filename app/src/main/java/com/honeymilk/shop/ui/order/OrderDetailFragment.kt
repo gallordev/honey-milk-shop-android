@@ -5,14 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentOrderDetailBinding
+import com.honeymilk.shop.ui.campaign.CampaignDetailFragmentArgs
 import com.honeymilk.shop.utils.Extensions.toCurrencyFormat
 import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OrderDetailFragment : Fragment() {

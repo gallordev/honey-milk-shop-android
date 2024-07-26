@@ -1,11 +1,15 @@
 package com.honeymilk.shop.ui.campaign
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayoutMediator
 import com.honeymilk.shop.databinding.FragmentCampaignDetailBinding
 import com.honeymilk.shop.ui.order.OrderListAdapter
 import com.honeymilk.shop.utils.BaseFragment
@@ -17,12 +21,13 @@ class CampaignDetailFragment :
     BaseFragment<FragmentCampaignDetailBinding>(FragmentCampaignDetailBinding::inflate) {
 
     private val args: CampaignDetailFragmentArgs by navArgs()
-    private lateinit var adapter: OrderListAdapter
+    private lateinit var orderListAdapter: OrderListAdapter
+    private lateinit var campaignSummaryAdapter: CampaignSummaryAdapter
     private val campaignDetailViewModel: CampaignDetailViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         campaignDetailViewModel.getCampaign(args.campaignId)
-        adapter = OrderListAdapter(
+        orderListAdapter = OrderListAdapter(
             onOrderClick = {
                 findNavController().navigate(
                     CampaignDetailFragmentDirections.actionCampaignDetailFragmentToOrderDetailFragment(
@@ -40,7 +45,19 @@ class CampaignDetailFragment :
                 )
             }
         )
-        binding.recyclerViewOrderList.adapter = adapter
+        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+        campaignSummaryAdapter = CampaignSummaryAdapter(requireContext()) { data ->
+            val clip = ClipData.newPlainText("text", data)
+            clipboard.setPrimaryClip(clip)
+        }
+        binding.viewPagerSummary.adapter = campaignSummaryAdapter
+        TabLayoutMediator(
+            binding.intoTabLayout,
+            binding.viewPagerSummary
+        ) { tab, position -> }.attach()
+
+        binding.recyclerViewOrderList.adapter = orderListAdapter
         campaignDetailViewModel.campaign.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
             when (resource) {
@@ -52,12 +69,9 @@ class CampaignDetailFragment :
                     with(binding) {
                         Glide.with(requireContext())
                             .load(resource.data?.imageURL)
-                            .into(binding.imageViewCampaignImage)
+                            .into(binding.campaignImage)
                         campaignName.text = resource.data?.name
-                        if (resource.data?.description != null && resource.data.description != "") {
-                            campaignDescription.text = resource.data.description
-                            campaignDescription.visibility = View.VISIBLE
-                        }
+
                     }
                 }
 
@@ -70,7 +84,10 @@ class CampaignDetailFragment :
         campaignDetailViewModel.campaignOrders.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
             if (resource is Resource.Success) {
-                adapter.submitList(resource.data)
+                resource.data?.let { orderList ->
+                    orderListAdapter.submitList(orderList)
+                    campaignSummaryAdapter.setData(orderList)
+                }
             }
         }
 

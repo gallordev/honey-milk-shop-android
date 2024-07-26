@@ -50,12 +50,7 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
 
                 is Resource.Success -> {
                     handleLoadingState(isLoading = false)
-                    findNavController().navigate(
-                        NewOrderFragmentDirections.actionNewOrderFragmentToOrderDetailFragment(
-                            args.campaignId,
-                            resource.data ?: ""
-                        )
-                    )
+                    findNavController().popBackStack()
                 }
             }
         }

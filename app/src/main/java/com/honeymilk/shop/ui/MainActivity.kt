@@ -3,7 +3,9 @@ package com.honeymilk.shop.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isGone
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,7 +15,7 @@ import com.honeymilk.shop.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     private lateinit var mBinding: ActivityMainBinding
     private val mAuthViewModel: AuthStatusViewModel by viewModels()
@@ -23,7 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
         setSupportActionBar(mBinding.topAppBar)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         mNavController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(mNavController.graph)
         mBinding.topAppBar.setupWithNavController(mNavController, appBarConfiguration)
@@ -43,5 +46,19 @@ class MainActivity : AppCompatActivity() {
                 }
             } ?: return@observe
         }
+
+        mNavController.addOnDestinationChangedListener(this)
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean =
+        mNavController.navigateUp() || super.onSupportNavigateUp()
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        mBinding.contentMain.bottomNavigation.isGone = destination.id != R.id.homeFragment
     }
 }
