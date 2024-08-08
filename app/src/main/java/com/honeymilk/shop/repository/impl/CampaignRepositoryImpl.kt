@@ -61,10 +61,20 @@ class CampaignRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         val imageUri = Uri.parse(campaign.imageURL)
         val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
-        val imageUrl = submitCampaignImage(compressedImageByteArray)
-        val updatedCampaign = campaign.copy(userId = auth.currentUserId, imageURL = imageUrl)
-        val data: String = collection.add(updatedCampaign).await().id
-        emit(Resource.Success(data))
+        when (val imageUrlResource = submitCampaignImage(compressedImageByteArray)) {
+            is Resource.Success -> {
+                val updatedCampaign = campaign.copy(
+                    userId = auth.currentUserId,
+                    imageURL = imageUrlResource.data ?: ""
+                )
+                val data: String = collection.add(updatedCampaign).await().id
+                emit(Resource.Success(data))
+            }
+            is Resource.Error -> {
+                emit(Resource.Error(imageUrlResource.message))
+            }
+            else -> { /** Do nothing */ }
+        }
     }.catch {
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
@@ -85,11 +95,15 @@ class CampaignRepositoryImpl @Inject constructor(
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun submitCampaignImage(imageByteArray: ByteArray): String {
-        val ref = storage.reference.child("${CAMPAIGNS_COLLECTION}/${UUID.randomUUID()}")
-        ref.putBytes(imageByteArray).await()
-        val wea: Uri = ref.downloadUrl.await()
-        return wea.toString()
+    private suspend fun submitCampaignImage(imageByteArray: ByteArray): Resource<String> {
+        return try {
+            val ref = storage.reference.child("${CAMPAIGNS_COLLECTION}/${UUID.randomUUID()}")
+            ref.putBytes(imageByteArray).await()
+            val imageUrl = ref.downloadUrl.await().toString()
+            Resource.Success(imageUrl)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
     }
 
 }
