@@ -79,7 +79,9 @@
     <string name="btn_edit_order">Edit Order</string>
     <string name="btn_delete_order">Delete Order</string>
     <string name="txt_extras">Extras</string>
-    <string name="txt_campaign_summary">Campaign Summary</string>
+    <string name="txt_campaign_summary">Campaign Items By Color</string>
     <string name="btn_copy_to_clipboard">Copy to Clipboard</string>
+    <string name="desc_fab">Add</string>
+    <string name="txt_campaign_items_by_group">Campaign Items By Group</string>
 
 </resources>

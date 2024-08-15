@@ -10,7 +10,6 @@ import com.honeymilk.shop.repository.CampaignRepository
 import com.honeymilk.shop.repository.OrderRepository
 import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
