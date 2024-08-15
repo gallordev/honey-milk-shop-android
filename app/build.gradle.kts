@@ -80,4 +80,6 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
 
+    implementation("net.sourceforge.jexcelapi:jxl:2.6.12")
+
 }

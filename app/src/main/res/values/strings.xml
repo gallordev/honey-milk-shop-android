@@ -83,5 +83,6 @@
     <string name="btn_copy_to_clipboard">Copy to Clipboard</string>
     <string name="desc_fab">Add</string>
     <string name="txt_campaign_items_by_group">Campaign Items By Group</string>
+    <string name="menu_export_orders">Export Orders</string>
 
 </resources>
