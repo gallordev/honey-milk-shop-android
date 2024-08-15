@@ -3,6 +3,7 @@ package com.honeymilk.shop.ui.campaign
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.honeymilk.shop.model.Campaign
 import com.honeymilk.shop.model.Order
@@ -19,6 +20,10 @@ class CampaignDetailViewModel @Inject constructor(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
 
+    private val _result = MutableLiveData<Resource<String>>()
+    val result: LiveData<Resource<String>>
+        get() = _result
+
     private val _campaign = MutableLiveData<Resource<Campaign?>>(null)
     val campaign: LiveData<Resource<Campaign?>>
         get() = _campaign
@@ -31,6 +36,17 @@ class CampaignDetailViewModel @Inject constructor(
         viewModelScope.launch {
             campaignRepository.getCampaign(campaignId).collect {
                 _campaign.value = it
+            }
+            orderRepository.getOrders(campaignId).collect {
+                _campaignOrders.value = it
+            }
+        }
+    }
+
+    fun deleteOrder(campaignId: String, orderId: String) {
+        viewModelScope.launch {
+            orderRepository.deleteOrder(campaignId, orderId).collect {
+                _result.value = it
             }
             orderRepository.getOrders(campaignId).collect {
                 _campaignOrders.value = it

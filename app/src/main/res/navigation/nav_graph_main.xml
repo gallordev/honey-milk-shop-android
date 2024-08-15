@@ -8,25 +8,22 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.honeymilk.shop.ui.home.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/label_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_newCampaignFragment"
-            app:destination="@id/newCampaignFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_newDesignFragment"
-            app:destination="@id/newDesignFragment" />
         <action
             android:id="@+id/action_homeFragment_to_designListFragment"
             app:destination="@id/designListFragment" />
         <action
             android:id="@+id/action_homeFragment_to_campaignListFragment"
             app:destination="@id/campaignListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_newCampaignFragment"
+            app:destination="@id/newCampaignFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.honeymilk.shop.ui.auth.login.LoginFragment"
-        android:label="fragment_login"
+        android:label="@string/label_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
@@ -38,32 +35,40 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.honeymilk.shop.ui.auth.sign_up.SignUpFragment"
-        android:label="fragment_sign_up"
+        android:label="@string/label_sign_up"
         tools:layout="@layout/fragment_sign_up" />
     <fragment
         android:id="@+id/passwordRecoveryFragment"
         android:name="com.honeymilk.shop.ui.auth.pass_recovery.PasswordRecoveryFragment"
-        android:label="fragment_password_recovery"
+        android:label="@string/label_password_recovery"
         tools:layout="@layout/fragment_password_recovery" />
     <fragment
         android:id="@+id/newCampaignFragment"
         android:name="com.honeymilk.shop.ui.campaign.NewCampaignFragment"
-        android:label="fragment_new_campaign"
-        tools:layout="@layout/fragment_new_campaign" />
+        android:label="@string/label_new_campaign"
+        tools:layout="@layout/fragment_new_campaign" >
+        <action
+            android:id="@+id/action_newCampaignFragment_to_campaignListFragment"
+            app:destination="@id/campaignListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newDesignFragment"
         android:name="com.honeymilk.shop.ui.design.NewDesignFragment"
-        android:label="fragment_new_design"
+        android:label="@string/label_new_design"
         tools:layout="@layout/fragment_design_form" />
     <fragment
         android:id="@+id/designListFragment"
         android:name="com.honeymilk.shop.ui.design.DesignListFragment"
-        android:label="fragment_design_list"
-        tools:layout="@layout/fragment_design_list" />
+        android:label="@string/label_designs"
+        tools:layout="@layout/fragment_design_list" >
+        <action
+            android:id="@+id/action_designListFragment_to_newDesignFragment"
+            app:destination="@id/newDesignFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newOrderFragment"
         android:name="com.honeymilk.shop.ui.order.NewOrderFragment"
-        android:label="fragment_order_form"
+        android:label="@string/label_new_order"
         tools:layout="@layout/fragment_order_form" >
         <argument
             android:name="campaignId"
@@ -75,16 +80,19 @@
     <fragment
         android:id="@+id/campaignListFragment"
         android:name="com.honeymilk.shop.ui.campaign.CampaignListFragment"
-        android:label="fragment_campaign_list"
+        android:label="@string/label_campaigns"
         tools:layout="@layout/fragment_campaign_list" >
         <action
             android:id="@+id/action_campaignListFragment_to_campaignDetailFragment"
             app:destination="@id/campaignDetailFragment" />
+        <action
+            android:id="@+id/action_campaignListFragment_to_newCampaignFragment"
+            app:destination="@id/newCampaignFragment" />
     </fragment>
     <fragment
         android:id="@+id/campaignDetailFragment"
         android:name="com.honeymilk.shop.ui.campaign.CampaignDetailFragment"
-        android:label="fragment_campaign_detail"
+        android:label="@string/label_campaign_detail"
         tools:layout="@layout/fragment_campaign_detail" >
         <argument
             android:name="campaignId"
@@ -102,7 +110,7 @@
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.honeymilk.shop.ui.order.OrderDetailFragment"
-        android:label="fragment_order_detail"
+        android:label="@string/label_order_detail"
         tools:layout="@layout/fragment_order_detail" >
         <argument
             android:name="campaignId"
@@ -115,7 +123,7 @@
         android:id="@+id/updateOrderFragment"
         android:name="com.honeymilk.shop.ui.order.UpdateOrderFragment"
         tools:layout="@layout/fragment_order_form"
-        android:label="UpdateOrderFragment" >
+        android:label="@string/label_update_order" >
         <argument
             android:name="campaignId"
             app:argType="string" />

@@ -2,6 +2,7 @@ package com.honeymilk.shop.ui.order
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.honeymilk.shop.databinding.FragmentOrderListBinding
@@ -34,6 +35,9 @@ class OrderListFragment : BaseFragment<FragmentOrderListBinding>(FragmentOrderLi
                         it.id
                     )
                 )
+            },
+            onDeleteClick = {
+                campaignDetailViewModel.deleteOrder(campaignDetailViewModel.campaign.value?.data?.id ?: "", it)
             }
         )
         binding.recyclerViewOrderList.adapter = orderListAdapter
@@ -43,6 +47,16 @@ class OrderListFragment : BaseFragment<FragmentOrderListBinding>(FragmentOrderLi
                 is Resource.Success -> {
                     orderListAdapter.submitList(resource.data)
                     println(resource.data)
+                }
+                else -> {}
+            }
+        }
+        campaignDetailViewModel.result.observe(viewLifecycleOwner) {
+            val resource = it ?: return@observe
+            when(resource) {
+                is Resource.Success -> {
+//                    campaignDetailViewModel.getCampaign(campaignDetailViewModel.campaign.value?.data?.id ?: "")
+                    Toast.makeText(requireContext(), "Order Deleted Successfully", Toast.LENGTH_SHORT).show()
                 }
                 else -> {}
             }

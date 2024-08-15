@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentNewCampaignBinding
 import com.honeymilk.shop.model.Campaign
 import com.honeymilk.shop.utils.BaseFragment
@@ -17,7 +18,8 @@ import com.honeymilk.shop.utils.getText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewCampaignFragment : BaseFragment<FragmentNewCampaignBinding>(FragmentNewCampaignBinding::inflate) {
+class NewCampaignFragment :
+    BaseFragment<FragmentNewCampaignBinding>(FragmentNewCampaignBinding::inflate) {
 
     private var campaignImageURL: String = ""
     private val newCampaignViewModel: NewCampaignViewModel by viewModels()
@@ -34,14 +36,16 @@ class NewCampaignFragment : BaseFragment<FragmentNewCampaignBinding>(FragmentNew
         with(binding) {
             newCampaignViewModel.resource.observe(viewLifecycleOwner) {
                 val resource = it ?: return@observe
-                when(resource) {
+                when (resource) {
                     is Resource.Error -> {
                         btnSave.isEnabled = true
                         showErrorMessage(resource.message ?: "Unknown Error")
                     }
+
                     is Resource.Loading -> {
                         btnSave.isEnabled = false
                     }
+
                     is Resource.Success -> {
                         findNavController().popBackStack()
                     }

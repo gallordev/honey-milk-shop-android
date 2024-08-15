@@ -7,11 +7,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,6 +25,7 @@ import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.isGone
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CampaignDetailFragment : BaseFragment<FragmentCampaignDetailBinding>(
@@ -43,16 +47,22 @@ class CampaignDetailFragment : BaseFragment<FragmentCampaignDetailBinding>(
                 data?.data?.let { uri ->
                     campaignDetailViewModel.campaignOrders.value?.let {
                         val orders = it.data ?: emptyList()
-                        orderExportHelper.createExcelFile(uri, orders)
+                        lifecycleScope.launch {
+                            orderExportHelper.exportOrdersToExcel(orders, uri, requireContext()).onSuccess {
+                                Toast.makeText(requireContext(), "Campaign Orders Exported Correctly", Toast.LENGTH_SHORT).show()
+                            }.onFailure {
+                                Toast.makeText(requireContext(), "Error Exporting Campaign Orders", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
 
             }
         }
-        orderExportHelper = OrderExportHelper(requireActivity())
+        orderExportHelper = OrderExportHelper()
         val menuProvider = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.campaign_menu, menu)
+                menuInflater.inflate(R.menu.menu_campaign_detail, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -60,10 +70,18 @@ class CampaignDetailFragment : BaseFragment<FragmentCampaignDetailBinding>(
                     R.id.export_orders -> {
                         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                             addCategory(Intent.CATEGORY_OPENABLE)
-                            type = "application/vnd.ms-excel"
-                            putExtra(Intent.EXTRA_TITLE, "orders.xls")
+                            type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            putExtra(Intent.EXTRA_TITLE, "orders.xlsx")
                         }
                         launcher.launch(intent)
+                        true
+                    }
+                    R.id.new_order -> {
+                        findNavController().navigate(
+                            CampaignDetailFragmentDirections.actionCampaignDetailFragmentToNewOrderFragment(
+                                args.campaignId
+                            )
+                        )
                         true
                     }
                     else -> false

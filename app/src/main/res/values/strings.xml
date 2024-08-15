@@ -84,5 +84,21 @@
     <string name="desc_fab">Add</string>
     <string name="txt_campaign_items_by_group">Campaign Items By Group</string>
     <string name="menu_export_orders">Export Orders</string>
+    <string name="label_home">Home</string>
+    <string name="label_login">Login</string>
+    <string name="label_sign_up">Sign Up</string>
+    <string name="label_password_recovery">Password Recovery</string>
+    <string name="label_new_campaign">New Campaign</string>
+    <string name="label_new_design">New Design</string>
+    <string name="label_designs">Designs</string>
+    <string name="label_new_order">New Order</string>
+    <string name="label_campaigns">Campaigns</string>
+    <string name="label_campaign_detail">Campaign Detail</string>
+    <string name="label_order_detail">Order Detail</string>
+    <string name="label_update_order">Update Order</string>
+    <string name="menu_new_order">New Order</string>
+    <string name="menu_new_campaign">New Campaign</string>
+    <string name="menu_new_design">New Design</string>
+    <string name="menu_logout">Logout</string>
 
 </resources>

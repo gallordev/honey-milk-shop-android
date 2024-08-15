@@ -19,6 +19,11 @@ data class Order(
     val trackingCode: String = "",
     @ServerTimestamp val createdAt: Date = Date()
 ) {
+    @Exclude
+    fun getTotalItemsQuantity(): Int {
+        val totalQuantity = items.sumOf { it.quantity }
+        return totalQuantity
+    }
 
     @Exclude
     fun getOrderItemsTotal(): Float {
@@ -28,6 +33,11 @@ data class Order(
         }
         return total
     }
+
+    @Exclude
+    fun getSubtotal(): Float = 0F
+        .plus(getOrderItemsTotal())
+        .plus(extrasTotal)
 
     @Exclude
     fun getTotal(): Float = 0F
