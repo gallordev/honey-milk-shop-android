@@ -162,7 +162,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
             android:hint="@string/hint_tracking_code"
-            app:endIconMode="clear_text"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_barcode_scanner"
             app:layout_constraintTop_toBottomOf="@id/switch_shipping_paid">
 
             <com.google.android.material.textfield.TextInputEditText
