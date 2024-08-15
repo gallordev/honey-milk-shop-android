@@ -1,9 +1,11 @@
 package com.honeymilk.shop.ui.order
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -22,6 +24,9 @@ import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
 import com.honeymilk.shop.utils.hide
+import com.honeymilk.shop.utils.setText
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +34,17 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
 
     private val args: NewOrderFragmentArgs by navArgs()
     private val newOrderViewModel: NewOrderViewModel by viewModels()
+    lateinit var launcher: ActivityResultLauncher<ScanOptions>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        launcher = registerForActivityResult(
+           ScanContract()
+        ) { result  ->
+            if(result.contents == null) {
+                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show()
+            } else {
+                binding.textFieldTrackingCode.setText(result.contents)
+            }
+        }
         val dialog = DesignListDialogFragment(newOrderViewModel::addOrderItems)
         newOrderViewModel.orderItems.observe(viewLifecycleOwner) {
             val orderItems = it ?: return@observe
@@ -53,6 +68,9 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
                     findNavController().popBackStack()
                 }
             }
+        }
+        binding.textFieldTrackingCode.setEndIconOnClickListener {
+            launcher.launch(ScanOptions())
         }
         binding.btnAddOrderItem.setOnClickListener {
             dialog.show(childFragmentManager, dialog.tag)
