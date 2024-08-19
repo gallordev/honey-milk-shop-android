@@ -115,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
-            android:hint="@string/hint_shiping_company"
+            android:hint="@string/hint_shipping_company"
             app:endIconMode="clear_text"
             app:layout_constraintTop_toBottomOf="@id/divider_two">
 

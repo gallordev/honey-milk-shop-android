@@ -1,24 +1,21 @@
 package com.honeymilk.shop.ui.design
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentDesignListBinding
 import com.honeymilk.shop.model.Design
-import com.honeymilk.shop.ui.campaign.CampaignListFragmentDirections
 import com.honeymilk.shop.utils.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -29,6 +26,27 @@ class DesignListFragment : BaseFragment<FragmentDesignListBinding>(FragmentDesig
     private lateinit var adapter: DesignsAdapter
     private val viewModel: DesignListViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupMenu()
+        val dialog = MaterialAlertDialogBuilder(requireActivity())
+
+        adapter = DesignsAdapter { d: Design, _ ->
+            dialog.apply {
+                val body = d.presentations.joinToString("\n") { "${it.name}: ${it.price}" }
+                setTitle(d.name + " • " + d.group)
+                setMessage(body)
+                setPositiveButton(getString(R.string.btn_ok)) { dialog, _ -> dialog.dismiss() }
+            }.show()
+        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
+        viewModel.designs.observe(viewLifecycleOwner) {
+            val designs = it ?: return@observe
+            Timber.d("Designs -> $designs")
+            adapter.submitList(designs)
+        }
+    }
+
+    fun setupMenu() {
         val menuProvider = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_design_list, menu)
@@ -48,23 +66,6 @@ class DesignListFragment : BaseFragment<FragmentDesignListBinding>(FragmentDesig
 
         }
         requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        val designs = mutableListOf<Design>()
-        adapter = DesignsAdapter { d: Design, v: MaterialCardView ->
-            v.isChecked = !v.isChecked
-            if (v.isChecked) {
-                designs.add(d)
-            } else {
-                designs.remove(d)
-            }
-            println(designs)
-        }
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
-        binding.recyclerView.adapter = adapter
-        viewModel.designs.observe(viewLifecycleOwner) {
-            val designs = it ?: return@observe
-            Timber.d("Designs -> $designs")
-            adapter.submitList(designs)
-        }
     }
 
 }

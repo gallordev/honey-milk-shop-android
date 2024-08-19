@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentOrderListBinding
 import com.honeymilk.shop.ui.campaign.CampaignDetailFragmentDirections
 import com.honeymilk.shop.ui.campaign.CampaignDetailViewModel
@@ -37,7 +39,15 @@ class OrderListFragment : BaseFragment<FragmentOrderListBinding>(FragmentOrderLi
                 )
             },
             onDeleteClick = {
-                campaignDetailViewModel.deleteOrder(campaignDetailViewModel.campaign.value?.data?.id ?: "", it)
+                MaterialAlertDialogBuilder(requireContext()).apply {
+                    setTitle(getString(R.string.title_delete_order))
+                    setMessage(getString(R.string.body_delete_order, it.customer.name))
+                    setPositiveButton(getString(R.string.btn_yes)) { _, _ ->
+                        campaignDetailViewModel.deleteOrder(campaignDetailViewModel.campaign.value?.data?.id ?: "", it.id)
+                    }
+                    setNegativeButton(getString(R.string.btn_no)) { dialog, _ -> dialog.dismiss() }
+                    show()
+                }
             }
         )
         binding.recyclerViewOrderList.adapter = orderListAdapter

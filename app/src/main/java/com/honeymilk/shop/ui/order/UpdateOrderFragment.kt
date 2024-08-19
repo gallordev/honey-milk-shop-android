@@ -3,6 +3,8 @@ package com.honeymilk.shop.ui.order
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -21,6 +23,8 @@ import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
 import com.honeymilk.shop.utils.hide
 import com.honeymilk.shop.utils.setText
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,8 +34,23 @@ class UpdateOrderFragment :
     private val args: UpdateOrderFragmentArgs by navArgs()
     private val orderDetailViewModel: OrderDetailViewModel by viewModels()
     private val updateOrderViewModel: UpdateOrderViewModel by viewModels()
+    private lateinit var launcher: ActivityResultLauncher<ScanOptions>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        launcher = registerForActivityResult(
+            ScanContract()
+        ) { result  ->
+            if(result.contents == null) {
+                Toast.makeText(requireContext(),
+                    getString(R.string.txt_cancelled), Toast.LENGTH_LONG).show()
+            } else {
+                binding.textFieldTrackingCode.setText(result.contents)
+            }
+        }
+
         val dialog = DesignListDialogFragment(updateOrderViewModel::addOrderItems)
+
         orderDetailViewModel.getOrder(args.campaignId, args.orderId)
         orderDetailViewModel.order.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
@@ -51,6 +70,9 @@ class UpdateOrderFragment :
         }
         binding.btnSave.setOnClickListener {
             updateOrderViewModel.updateOrder(args.campaignId, buildOrder())
+        }
+        binding.textFieldTrackingCode.setEndIconOnClickListener {
+            launcher.launch(ScanOptions())
         }
         updateOrderViewModel.resource.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe

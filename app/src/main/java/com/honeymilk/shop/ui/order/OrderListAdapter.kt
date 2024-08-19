@@ -13,7 +13,7 @@ import com.honeymilk.shop.utils.Extensions.toCurrencyFormat
 class OrderListAdapter(
     private val onOrderClick: ((Order) -> Unit)? = null,
     private val onEditClick: ((Order) -> Unit)? = null,
-    private val onDeleteClick: ((String) -> Unit)? = null,
+    private val onDeleteClick: ((Order) -> Unit)? = null,
 ) : DataBoundListAdapter<Order, LayoutItemOrderBinding>(
     OrderDiffCallback()
 ) {
@@ -41,7 +41,7 @@ class OrderListAdapter(
                 onEditClick?.invoke(item)
             }
             btnDelete.setOnClickListener {
-                onDeleteClick?.invoke(item.id)
+                onDeleteClick?.invoke(item)
             }
         }
     }

@@ -34,13 +34,14 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
 
     private val args: NewOrderFragmentArgs by navArgs()
     private val newOrderViewModel: NewOrderViewModel by viewModels()
-    lateinit var launcher: ActivityResultLauncher<ScanOptions>
+    private lateinit var launcher: ActivityResultLauncher<ScanOptions>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launcher = registerForActivityResult(
            ScanContract()
         ) { result  ->
             if(result.contents == null) {
-                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.txt_cancelled), Toast.LENGTH_LONG).show()
             } else {
                 binding.textFieldTrackingCode.setText(result.contents)
             }
