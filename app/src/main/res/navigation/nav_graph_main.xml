@@ -64,6 +64,9 @@
         <action
             android:id="@+id/action_designListFragment_to_newDesignFragment"
             app:destination="@id/newDesignFragment" />
+        <action
+            android:id="@+id/action_designListFragment_to_updateDesignFragment"
+            app:destination="@id/updateDesignFragment" />
     </fragment>
     <fragment
         android:id="@+id/newOrderFragment"
@@ -131,6 +134,15 @@
             android:name="orderId"
             app:argType="string" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/updateDesignFragment"
+        android:name="com.honeymilk.shop.ui.design.UpdateDesignFragment"
+        android:label="@string/label_update_design"
+        tools:layout="@layout/fragment_design_form" >
+        <argument
+            android:name="designId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

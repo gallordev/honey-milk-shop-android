@@ -18,7 +18,6 @@ class OrderDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _order = MutableLiveData<Resource<Order?>>(null)
-
     val order: LiveData<Resource<Order?>>
         get() = _order
 

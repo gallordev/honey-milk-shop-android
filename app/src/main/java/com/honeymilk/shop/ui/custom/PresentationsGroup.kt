@@ -78,7 +78,7 @@ class PresentationsGroup : LinearLayout {
         checkBoxParent.addOnCheckedStateChangedListener(parentOnCheckedStateChangedListener)
     }
 
-    fun setFormItems(items: Array<String>) {
+    private fun setFormItems(items: Array<String>) {
         val checkboxContainer = findViewById<LinearLayout>(R.id.checkbox_container)
 
         val tempMap = mutableMapOf<String, Map<String, View>>()
@@ -155,6 +155,7 @@ class PresentationsGroup : LinearLayout {
             }
         }
     }
+
     fun getPresentationsData(): List<Presentation> {
         val data = mutableListOf<Presentation>()
         viewsMap.forEach { view ->

@@ -17,6 +17,7 @@ import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentDesignListBinding
 import com.honeymilk.shop.model.Design
 import com.honeymilk.shop.utils.BaseFragment
+import com.honeymilk.shop.utils.Extensions.toCurrencyFormat
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -31,10 +32,16 @@ class DesignListFragment : BaseFragment<FragmentDesignListBinding>(FragmentDesig
 
         adapter = DesignsAdapter { d: Design, _ ->
             dialog.apply {
-                val body = d.presentations.joinToString("\n") { "${it.name}: ${it.price}" }
+                val body = d.presentations.joinToString("\n") { "${it.name}: ${it.price.toCurrencyFormat()}" }
                 setTitle(d.name + " • " + d.group)
                 setMessage(body)
-                setPositiveButton(getString(R.string.btn_ok)) { dialog, _ -> dialog.dismiss() }
+                setPositiveButton("Update Design") { dialog, _ ->
+                    findNavController().navigate(
+                        DesignListFragmentDirections.actionDesignListFragmentToUpdateDesignFragment(d.id)
+                    )
+                    dialog.dismiss()
+                }
+                setNeutralButton("Close") { dialog, _ -> dialog.dismiss() }
             }.show()
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())

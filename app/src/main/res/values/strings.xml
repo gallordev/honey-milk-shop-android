@@ -114,4 +114,5 @@
     <string name="title_delete_order">Delete Order</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
+    <string name="label_update_design">Update Design</string>
 </resources>

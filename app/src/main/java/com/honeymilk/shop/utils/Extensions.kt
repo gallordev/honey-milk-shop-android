@@ -11,16 +11,12 @@ fun TextInputLayout.getText(): String {
     return this.editText?.text?.trim().toString()
 }
 
-fun TextInputLayout.setText(value: String){
+fun TextInputLayout.setText(value: String) {
     this.editText?.setText(value)
 }
 
-fun TextInputLayout.setText(value: Number){
+fun TextInputLayout.setText(value: Number) {
     this.editText?.setText(value.toString())
-}
-
-fun Long.toDate() : Date? {
-    return Date(this)
 }
 
 fun View.hide(hide: Boolean) {

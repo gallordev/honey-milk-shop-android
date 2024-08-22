@@ -69,9 +69,16 @@ class DesignRepositoryImpl @Inject constructor(
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun updateDesign(design: Design): Flow<Resource<String>> = flow {
+    override suspend fun updateDesign(design: Design, updateImage: Boolean): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
-        collection.document(design.id).set(design).await()
+        var updatedDesign = design
+        if(updateImage) {
+            val imageUri = Uri.parse(design.imageURL)
+            val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
+            val imageUrl = submitDesignImage(compressedImageByteArray)
+            updatedDesign = design.copy(imageURL = imageUrl)
+        }
+        collection.document(design.id).set(updatedDesign).await()
         emit(Resource.Success(design.id))
     }.catch {
         emit(Resource.Error(it.message.toString()))

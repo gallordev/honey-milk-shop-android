@@ -59,6 +59,7 @@
     <string name="label_password_recovery">Recuperación de Contraseña</string>
     <string name="label_sign_up">Registrarse</string>
     <string name="label_update_order">Actualizar Pedido</string>
+    <string name="label_update_design">Actualizar Diseño</string>
 
     <string name="menu_color">Color</string>
     <string name="menu_export_orders">Exportar Pedidos</string>
