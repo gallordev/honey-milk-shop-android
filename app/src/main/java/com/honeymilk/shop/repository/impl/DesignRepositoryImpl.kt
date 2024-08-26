@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
@@ -89,6 +90,7 @@ class DesignRepositoryImpl @Inject constructor(
         collection.document(designId).delete()
         emit(Resource.Success(designId))
     }.catch {
+        Timber.e(it.message.toString())
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 

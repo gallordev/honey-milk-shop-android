@@ -19,10 +19,24 @@ class DesignListViewModel @Inject constructor(
     val designs: LiveData<List<Design>>
         get() = _designs
 
+
     init {
+        loadDesigns()
+    }
+
+    private fun loadDesigns() {
         viewModelScope.launch {
             designRepository.designs.collect {
                 _designs.value = it
+            }
+        }
+    }
+
+    fun deleteDesign(design: Design) {
+        viewModelScope.launch {
+            designRepository.deleteDesign(design.id).collect {
+
+                loadDesigns()
             }
         }
     }

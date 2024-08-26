@@ -35,13 +35,17 @@ class DesignListFragment : BaseFragment<FragmentDesignListBinding>(FragmentDesig
                 val body = d.presentations.joinToString("\n") { "${it.name}: ${it.price.toCurrencyFormat()}" }
                 setTitle(d.name + " • " + d.group)
                 setMessage(body)
-                setPositiveButton("Update Design") { dialog, _ ->
+                setPositiveButton(getString(R.string.btn_update_design)) { dialog, _ ->
                     findNavController().navigate(
                         DesignListFragmentDirections.actionDesignListFragmentToUpdateDesignFragment(d.id)
                     )
                     dialog.dismiss()
                 }
-                setNeutralButton("Close") { dialog, _ -> dialog.dismiss() }
+                setNeutralButton(getString(R.string.btn_close)) { dialog, _ -> dialog.dismiss() }
+                setNegativeButton(getString(R.string.btn_delete_design)) { dialog, _ ->
+                    viewModel.deleteDesign(d)
+                    dialog.dismiss()
+                }
             }.show()
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -53,12 +57,11 @@ class DesignListFragment : BaseFragment<FragmentDesignListBinding>(FragmentDesig
         }
     }
 
-    fun setupMenu() {
+    private fun setupMenu() {
         val menuProvider = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_design_list, menu)
             }
-
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.new_design -> {
@@ -70,7 +73,6 @@ class DesignListFragment : BaseFragment<FragmentDesignListBinding>(FragmentDesig
                     else -> false
                 }
             }
-
         }
         requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
