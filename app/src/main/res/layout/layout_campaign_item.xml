@@ -5,7 +5,8 @@
     <data>
 
         <import type="com.honeymilk.shop.model.Campaign" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="campaign"
@@ -18,44 +19,49 @@
         style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_8dp"
+        android:layout_marginHorizontal="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/campaign_image"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="#BCB8B8"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:contentDescription="@string/desc_campaign_image"
                 android:scaleType="centerCrop"
                 app:imageFromUrl="@{campaign.imageURL}"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
 
             <TextView
                 android:id="@+id/campaign_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/screen_padding"
                 android:text="@{campaign.name}"
-                android:textAppearance="?attr/textAppearanceTitleLarge" />
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                app:layout_constraintTop_toBottomOf="@id/campaign_image" />
 
-            <TextView
-                android:id="@+id/campaign_status"
+            <Button
+                android:id="@+id/btn_more"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/screen_padding"
-                android:text="@string/txt_campaign_status"
-                android:visibility="@{campaign.isActive ? View.VISIBLE : View.GONE}"
-                android:textAppearance="?attr/textAppearanceBody1" />
+                app:icon="@drawable/ic_more_vert"
+                app:layout_constraintBottom_toBottomOf="@id/campaign_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/campaign_name" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

@@ -118,4 +118,6 @@
     <string name="btn_update_design">Update Design</string>
     <string name="btn_close">Close</string>
     <string name="btn_delete_design">Delete Design</string>
+    <string name="menu_update_campaign">Update Campaign</string>
+    <string name="menu_delete_campaign">Delete Campaign</string>
 </resources>
