@@ -33,22 +33,20 @@ class CampaignListAdapter(
             onCampaignClick?.invoke(item)
         }
         binding.btnMore.setOnClickListener {
-            showMenu(it, R.menu.menu_popup_campaign)
+            showMenu(it, R.menu.menu_popup_campaign, item)
         }
     }
 
-    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+    private fun showMenu(v: View, @MenuRes menuRes: Int, item: Campaign) {
         val popup = PopupMenu(v.context, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
-
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            // Respond to menu item click.
+            when(menuItem.itemId) {
+                R.id.update_campaign -> onUpdateCampaignClick?.invoke(item)
+                R.id.delete_campaign -> onDeleteCampaignClick?.invoke(item)
+            }
             true
         }
-        popup.setOnDismissListener {
-            // Respond to popup being dismissed.
-        }
-        // Show the popup menu.
         popup.show()
     }
 }

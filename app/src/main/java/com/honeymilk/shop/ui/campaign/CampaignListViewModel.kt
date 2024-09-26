@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.honeymilk.shop.model.Campaign
 import com.honeymilk.shop.repository.CampaignRepository
+import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,10 +20,26 @@ class CampaignListViewModel @Inject constructor(
         get() = _campaigns
 
     init {
+        loadCampaigns()
+    }
+
+    private fun loadCampaigns() {
         viewModelScope.launch {
             campaignRepository.campaigns.collect {
                 _campaigns.value = it
             }
         }
     }
+
+    fun deleteCampaign(campaignId: String) {
+        viewModelScope.launch {
+            campaignRepository.deleteCampaign(campaignId).collect {
+                when(it) {
+                    is Resource.Success -> loadCampaigns()
+                    else -> {}
+                }
+            }
+        }
+    }
+
 }

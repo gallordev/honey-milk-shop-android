@@ -9,17 +9,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.honeymilk.shop.R
-import com.honeymilk.shop.databinding.FragmentNewCampaignBinding
+import com.honeymilk.shop.databinding.FragmentCampaignFormBinding
 import com.honeymilk.shop.model.Campaign
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
+import com.honeymilk.shop.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewCampaignFragment :
-    BaseFragment<FragmentNewCampaignBinding>(FragmentNewCampaignBinding::inflate) {
+class NewCampaignFragment : BaseFragment<FragmentCampaignFormBinding>(
+    FragmentCampaignFormBinding::inflate
+) {
 
     private var campaignImageURL: String = ""
     private val newCampaignViewModel: NewCampaignViewModel by viewModels()
@@ -38,15 +39,16 @@ class NewCampaignFragment :
                 val resource = it ?: return@observe
                 when (resource) {
                     is Resource.Error -> {
-                        btnSave.isEnabled = true
+                        handleLoadingState(isLoading = false)
                         showErrorMessage(resource.message ?: "Unknown Error")
                     }
 
                     is Resource.Loading -> {
-                        btnSave.isEnabled = false
+                        handleLoadingState(isLoading = true)
                     }
 
                     is Resource.Success -> {
+                        handleLoadingState(isLoading = false)
                         findNavController().popBackStack()
                     }
                 }
@@ -73,6 +75,11 @@ class NewCampaignFragment :
                 isActive = switchCampaignStatus.isChecked
             )
         }
+    }
+
+    private fun handleLoadingState(isLoading: Boolean) {
+        binding.btnSave.hide(isLoading)
+        binding.progressIndicator.hide(!isLoading)
     }
 
 }

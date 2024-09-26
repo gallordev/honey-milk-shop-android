@@ -79,9 +79,25 @@ class CampaignRepositoryImpl @Inject constructor(
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun updateCampaign(campaign: Campaign): Flow<Resource<String>> = flow {
+    override suspend fun updateCampaign(campaign: Campaign, updateImage: Boolean): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
-        collection.document(campaign.id).set(campaign).await()
+        var updatedCampaign = campaign
+        if (updateImage) {
+            val imageUri = Uri.parse(campaign.imageURL)
+            val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
+            when (val imageUrlResource = submitCampaignImage(compressedImageByteArray)) {
+                is Resource.Success -> {
+                    updatedCampaign = campaign.copy(
+                        imageURL = imageUrlResource.data ?: ""
+                    )
+                }
+                is Resource.Error -> {
+                    emit(Resource.Error(imageUrlResource.message))
+                }
+                else -> { /** Do nothing */ }
+            }
+        }
+        collection.document(campaign.id).set(updatedCampaign).await()
         emit(Resource.Success(campaign.id))
     }.catch {
         emit(Resource.Error(it.message.toString()))

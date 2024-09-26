@@ -46,7 +46,7 @@
         android:id="@+id/newCampaignFragment"
         android:name="com.honeymilk.shop.ui.campaign.NewCampaignFragment"
         android:label="@string/label_new_campaign"
-        tools:layout="@layout/fragment_new_campaign" >
+        tools:layout="@layout/fragment_campaign_form" >
         <action
             android:id="@+id/action_newCampaignFragment_to_campaignListFragment"
             app:destination="@id/campaignListFragment" />
@@ -91,6 +91,9 @@
         <action
             android:id="@+id/action_campaignListFragment_to_newCampaignFragment"
             app:destination="@id/newCampaignFragment" />
+        <action
+            android:id="@+id/action_campaignListFragment_to_updateCampaignFragment"
+            app:destination="@id/updateCampaignFragment" />
     </fragment>
     <fragment
         android:id="@+id/campaignDetailFragment"
@@ -142,6 +145,15 @@
         tools:layout="@layout/fragment_design_form" >
         <argument
             android:name="designId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateCampaignFragment"
+        android:name="com.honeymilk.shop.ui.campaign.UpdateCampaignFragment"
+        android:label="UpdateCampaignFragment"
+        tools:layout="@layout/fragment_campaign_form">
+        <argument
+            android:name="campaignId"
             app:argType="string" />
     </fragment>
 
