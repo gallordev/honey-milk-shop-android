@@ -17,48 +17,73 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
-    private lateinit var mBinding: ActivityMainBinding
-    private val mAuthViewModel: AuthStatusViewModel by viewModels()
-    private lateinit var mNavController: NavController
+    private lateinit var binding: ActivityMainBinding
+    private val authStatusViewModel: AuthStatusViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
-        setSupportActionBar(mBinding.topAppBar)
+        binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
+        setSupportActionBar(binding.topAppBar)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        mNavController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(mNavController.graph)
-        mBinding.topAppBar.setupWithNavController(mNavController, appBarConfiguration)
-        val authDestinations = listOf(
+
+        navController = navHostFragment.navController
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.homeFragment,
+                R.id.campaignListFragment,
+                R.id.designListFragment
+            )
+        )
+        binding.topAppBar.setupWithNavController(navController, appBarConfiguration)
+        binding.contentMain.bottomNavigation.setupWithNavController(navController)
+
+        val authDestinations = setOf(
             R.id.loginFragment,
             R.id.signUpFragment,
             R.id.passwordRecoveryFragment
         )
-        mAuthViewModel.currentUser.observe(this) { signedUser ->
+        authStatusViewModel.currentUser.observe(this) { signedUser ->
             signedUser?.let {
-                if (authDestinations.contains(mNavController.currentDestination?.id)) {
-                    val startDestination = mNavController.graph.startDestinationId
+                if (authDestinations.contains(navController.currentDestination?.id)) {
+                    val startDestination = navController.graph.startDestinationId
                     val navOptions = NavOptions.Builder()
                         .setPopUpTo(startDestination, true)
                         .build()
-                    mNavController.navigate(startDestination, null, navOptions)
+                    navController.navigate(startDestination, null, navOptions)
                 }
             } ?: return@observe
         }
 
-        mNavController.addOnDestinationChangedListener(this)
+        navController.addOnDestinationChangedListener(this)
 
     }
 
     override fun onSupportNavigateUp(): Boolean =
-        mNavController.navigateUp() || super.onSupportNavigateUp()
+        navController.navigateUp() || super.onSupportNavigateUp()
 
     override fun onDestinationChanged(
         controller: NavController,
         destination: NavDestination,
         arguments: Bundle?
     ) {
-        mBinding.contentMain.bottomNavigation.isGone = destination.id != R.id.homeFragment
+        when(destination.id) {
+            R.id.loginFragment,
+            R.id.signUpFragment,
+            R.id.passwordRecoveryFragment -> supportActionBar?.hide()
+
+            else -> {
+                binding.contentMain.bottomNavigation.isGone = true
+                supportActionBar?.show()
+            }
+        }
+        val bottomNavDestinations = setOf(
+            R.id.homeFragment,
+            R.id.campaignListFragment,
+            R.id.designListFragment
+        )
+        binding.contentMain.bottomNavigation.isGone = !bottomNavDestinations.contains(destination.id)
     }
 }

@@ -9,14 +9,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="@dimen/screen_padding">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageView_design_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_16dp"
             android:background="#CDCBCB"
             android:contentDescription="@string/desc_design_image"
             android:scaleType="centerCrop"

@@ -11,22 +11,5 @@
     android:padding="@dimen/screen_padding"
     tools:context=".ui.home.HomeFragment">
 
-    <Button
-        android:id="@+id/btn_new_campaign"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_new_campaign" />
-
-    <Button
-        android:id="@+id/btn_designs_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_designs_list" />
-
-    <Button
-        android:id="@+id/btn_campaign_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Campaign List" />
 
 </LinearLayout>
