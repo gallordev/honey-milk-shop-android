@@ -12,7 +12,8 @@
     <string name="btn_forgot_password">Forgot password? Click here.</string>
     <string name="btn_later">Later</string>
     <string name="btn_login">Login</string>
-    <string name="btn_new_campaign">New Campaign</string><string name="btn_new_design">New Design</string>
+    <string name="btn_new_campaign">New Campaign</string>
+    <string name="btn_new_design">New Design</string>
     <string name="btn_new_order">New Order</string>
     <string name="btn_ok">OK</string>
     <string name="btn_password_recovery">Send Password Recovery Email</string>
@@ -120,4 +121,10 @@
     <string name="btn_delete_design">Delete Design</string>
     <string name="menu_update_campaign">Update Campaign</string>
     <string name="menu_delete_campaign">Delete Campaign</string>
+    <string name="title_delete_campaign">Are you sure to delete %1$s campaign?</string>
+    <string name="message_delete_campaign">All orders associated with this campaign will also be deleted</string>
+    <string name="menu_update_design">Update Design</string>
+    <string name="menu_delete_design">Delete Design</string>
+    <string name="title_delete_design">Delete %1$s?</string>
+    <string name="message_delete_design">Are you sure you want to delete this design? This action cannot be undone.</string>
 </resources>

@@ -12,9 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentCampaignListBinding
-import com.honeymilk.shop.ui.design.DesignListFragmentDirections
 import com.honeymilk.shop.utils.BaseFragment
-import com.honeymilk.shop.utils.Extensions.toCurrencyFormat
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,13 +44,13 @@ class CampaignListFragment :
             },
             onDeleteCampaignClick = { campaign ->
                 dialog.apply {
-                    setTitle("Are you sure to delete ${campaign.name} campaign?")
-                    setMessage("All orders associated with this campaign will also be deleted")
-                    setPositiveButton("Yes") { dialog, _ ->
+                    setTitle(getString(R.string.title_delete_campaign, campaign.name))
+                    setMessage(getString(R.string.message_delete_campaign))
+                    setPositiveButton(getString(R.string.btn_yes)) { dialog, _ ->
                         dialog.dismiss()
                         campaignListViewModel.deleteCampaign(campaign.id)
                     }
-                    setNegativeButton("No") { dialog, _ ->
+                    setNegativeButton(getString(R.string.btn_no)) { dialog, _ ->
                         dialog.dismiss()
                     }
                 }.show()

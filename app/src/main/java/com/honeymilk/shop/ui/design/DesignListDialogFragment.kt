@@ -12,7 +12,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.honeymilk.shop.R
 import com.honeymilk.shop.model.Design
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class DesignListDialogFragment(
@@ -31,14 +30,14 @@ class DesignListDialogFragment(
         builder.setView(view)
         val tempSelectedDesigns = mutableListOf<Design>()
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        adapter = DesignsAdapter { d: Design, v: MaterialCardView ->
+        adapter = DesignsAdapter(clickCallback = { d: Design, v: MaterialCardView ->
             v.isChecked = !v.isChecked
             if (v.isChecked) {
                 tempSelectedDesigns.add(d)
             } else {
                 tempSelectedDesigns.remove(d)
             }
-        }
+        })
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = adapter
         viewModel.designs.observe(requireActivity()) {

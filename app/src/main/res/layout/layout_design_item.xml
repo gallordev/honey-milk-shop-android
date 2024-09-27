@@ -17,36 +17,49 @@
         style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_8dp"
+        android:layout_marginHorizontal="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
         android:clickable="true"
         android:focusable="true"
-        android:checkable="true"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/design_image"
-                app:shapeAppearanceOverlay="@style/roundedCornersImageView"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="#BCB8B8"
-                app:imageFromUrl="@{design.imageURL}"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:contentDescription="@string/desc_design_image"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                app:imageFromUrl="@{design.imageURL}"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
 
             <TextView
                 android:id="@+id/design_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/screen_padding"
+                android:text="@{design.name +  ` • ` + design.group}"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                app:layout_constraintTop_toBottomOf="@id/design_image" />
+
+            <Button
+                android:id="@+id/btn_more"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@{design.name +  ` • ` + design.group}"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
+                app:icon="@drawable/ic_more_vert"
+                app:layout_constraintBottom_toBottomOf="@id/design_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/design_name" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
