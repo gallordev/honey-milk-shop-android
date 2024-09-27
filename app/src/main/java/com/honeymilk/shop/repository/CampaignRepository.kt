@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface CampaignRepository {
     val campaigns: Flow<List<Campaign>>
     suspend fun getCampaign(campaignId: String): Flow<Resource<Campaign?>>
+    suspend fun getLastCampaign(): Flow<Resource<Campaign?>>
     suspend fun newCampaign(campaign: Campaign): Flow<Resource<String>>
     suspend fun updateCampaign(campaign: Campaign, updateImage: Boolean): Flow<Resource<String>>
     suspend fun deleteCampaign(campaignId: String): Flow<Resource<String>>

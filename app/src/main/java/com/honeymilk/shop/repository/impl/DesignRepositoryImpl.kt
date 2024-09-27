@@ -60,9 +60,11 @@ class DesignRepositoryImpl @Inject constructor(
 
     override suspend fun newDesign(design: Design): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
-        val imageUri = Uri.parse(design.imageURL)
-        val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
-        val imageUrl = submitDesignImage(compressedImageByteArray)
+        val imageUrl = if(design.imageURL.isNotBlank()) {
+            val imageUri = Uri.parse(design.imageURL)
+            val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
+            submitDesignImage(compressedImageByteArray)
+        } else ""
         val updatedDesign = design.copy(userId = auth.currentUserId, imageURL = imageUrl)
         val data: String = collection.add(updatedDesign).await().id
         emit(Resource.Success(data))
@@ -72,13 +74,14 @@ class DesignRepositoryImpl @Inject constructor(
 
     override suspend fun updateDesign(design: Design, updateImage: Boolean): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
-        var updatedDesign = design
-        if(updateImage) {
-            val imageUri = Uri.parse(design.imageURL)
-            val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
-            val imageUrl = submitDesignImage(compressedImageByteArray)
-            updatedDesign = design.copy(imageURL = imageUrl)
-        }
+        val updatedDesign = if (updateImage) {
+            val newImageUrl = if (design.imageURL.isNotBlank()) {
+                val imageUri = Uri.parse(design.imageURL)
+                val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
+                submitDesignImage(compressedImageByteArray)
+            } else ""
+            design.copy(imageURL = newImageUrl)
+        } else design
         collection.document(design.id).set(updatedDesign).await()
         emit(Resource.Success(design.id))
     }.catch {

@@ -128,4 +128,5 @@
     <string name="title_delete_design">Delete %1$s?</string>
     <string name="message_delete_design">Are you sure you want to delete this design? This action cannot be undone.</string>
     <string name="label_update_campaign">Update Campaign</string>
+    <string name="txt_work_in_progress">Work in Progress</string>
 </resources>

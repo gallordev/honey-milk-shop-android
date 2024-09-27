@@ -57,46 +57,67 @@ class CampaignRepositoryImpl @Inject constructor(
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun newCampaign(campaign: Campaign): Flow<Resource<String>> = flow {
+    override suspend fun getLastCampaign(): Flow<Resource<Campaign?>> = flow {
         emit(Resource.Loading())
-        val imageUri = Uri.parse(campaign.imageURL)
-        val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
-        when (val imageUrlResource = submitCampaignImage(compressedImageByteArray)) {
-            is Resource.Success -> {
-                val updatedCampaign = campaign.copy(
-                    userId = auth.currentUserId,
-                    imageURL = imageUrlResource.data ?: ""
-                )
-                val data: String = collection.add(updatedCampaign).await().id
-                emit(Resource.Success(data))
-            }
-            is Resource.Error -> {
-                emit(Resource.Error(imageUrlResource.message))
-            }
-            else -> { /** Do nothing */ }
-        }
+        val campaign = collection
+            .orderBy(CREATED_AT_FIELD, Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .await()
+            .documents
+            .firstOrNull()
+            ?.toObject<Campaign>()
+        emit(Resource.Success(campaign))
     }.catch {
         emit(Resource.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun updateCampaign(campaign: Campaign, updateImage: Boolean): Flow<Resource<String>> = flow {
+    override suspend fun newCampaign(campaign: Campaign): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
-        var updatedCampaign = campaign
-        if (updateImage) {
+        val updatedCampaign = if (campaign.imageURL.isNotBlank()) {
             val imageUri = Uri.parse(campaign.imageURL)
             val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
             when (val imageUrlResource = submitCampaignImage(compressedImageByteArray)) {
                 is Resource.Success -> {
-                    updatedCampaign = campaign.copy(
+                    campaign.copy(
+                        userId = auth.currentUserId,
                         imageURL = imageUrlResource.data ?: ""
                     )
                 }
                 is Resource.Error -> {
                     emit(Resource.Error(imageUrlResource.message))
+                    return@flow
                 }
-                else -> { /** Do nothing */ }
+                else -> campaign
             }
+        } else {
+            campaign.copy(userId = auth.currentUserId) // Just add userId if imageURL is blank
         }
+        val data: String = collection.add(updatedCampaign).await().id
+        emit(Resource.Success(data))
+    }.catch {
+        emit(Resource.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun updateCampaign(
+        campaign: Campaign,
+        updateImage: Boolean
+    ): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        val updatedCampaign = if (updateImage && campaign.imageURL.isNotBlank()) {
+            val imageUri = Uri.parse(campaign.imageURL)
+            val compressedImageByteArray = imageCompressorHelper.compressImage(imageUri)
+            when (val imageUrlResource = submitCampaignImage(compressedImageByteArray)) {
+                is Resource.Success -> {
+                    campaign.copy(imageURL = imageUrlResource.data ?: "")
+                }
+                is Resource.Error -> {
+                    emit(Resource.Error(imageUrlResource.message))
+                    return@flow
+                }
+                else -> campaign
+            }
+        } else campaign
         collection.document(campaign.id).set(updatedCampaign).await()
         emit(Resource.Success(campaign.id))
     }.catch {

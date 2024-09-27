@@ -11,6 +11,10 @@ fun TextInputLayout.getText(): String {
     return this.editText?.text?.trim().toString()
 }
 
+fun String.toValidFloat(): Float {
+    return this.toFloatOrNull() ?: 0f
+}
+
 fun TextInputLayout.setText(value: String) {
     this.editText?.setText(value)
 }

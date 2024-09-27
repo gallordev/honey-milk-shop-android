@@ -1,7 +1,12 @@
 package com.honeymilk.shop.ui.campaign
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import com.honeymilk.shop.databinding.FragmentCampaignSummaryBinding
 import com.honeymilk.shop.model.Order
@@ -16,14 +21,35 @@ class CampaignSummaryFragment : BaseFragment<FragmentCampaignSummaryBinding>(
     private val campaignDetailViewModel: CampaignDetailViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        campaignDetailViewModel.campaignOrders.observe(viewLifecycleOwner) {
-            val resource = it ?: return@observe
-            resource.data?.let { orderList ->
-                binding.campaignSummary.text = getCampaignRawItemsSummary(orderList)
-                binding.campaignSummaryExtras.text = getExtrasSummary(orderList)
-                binding.campaignSummaryByGroup.text = getItemsByDesign(orderList)
+        with(binding) {
+            campaignDetailViewModel.campaignOrders.observe(viewLifecycleOwner) {
+                val resource = it ?: return@observe
+                resource.data?.let { orderList ->
+                    campaignSummary.text = getCampaignRawItemsSummary(orderList)
+                    campaignSummaryExtras.text = getExtrasSummary(orderList)
+                    campaignSummaryByGroup.text = getItemsByDesign(orderList)
+                }
             }
+
+            btnClipboardExtras.setOnClickListener {
+                copyTextViewTextToClipboard(campaignSummaryExtras)
+            }
+
+            btnClipboardItemsByColor.setOnClickListener {
+                copyTextViewTextToClipboard(campaignSummary)
+            }
+
+            btnClipboardItemsByGroup.setOnClickListener {
+                copyTextViewTextToClipboard(campaignSummaryByGroup)
+            }
+
         }
+    }
+
+    private fun copyTextViewTextToClipboard(textView: TextView) {
+        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("label", textView.text)
+        clipboard.setPrimaryClip(clip)
     }
 
     private fun getCampaignRawItemsSummary(orderList: List<Order>) : String {

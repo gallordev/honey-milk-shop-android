@@ -23,6 +23,7 @@ import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
 import com.honeymilk.shop.utils.hide
 import com.honeymilk.shop.utils.setText
+import com.honeymilk.shop.utils.toValidFloat
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
@@ -184,9 +185,9 @@ class UpdateOrderFragment :
                 ),
                 items = updateOrderViewModel.orderItems.value ?: emptyList(),
                 extras = textFieldExtras.getText(),
-                extrasTotal = textFieldExtrasTotal.getText().toFloat(),
+                extrasTotal = textFieldExtrasTotal.getText().toValidFloat(),
                 shippingCompany = textFieldShippingCompany.getText(),
-                shippingPrice = textFieldShippingPrice.getText().toFloat(),
+                shippingPrice = textFieldShippingPrice.getText().toValidFloat(),
                 isShippingPaid = switchShippingPaid.isChecked,
                 trackingCode = textFieldTrackingCode.getText()
             )
