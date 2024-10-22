@@ -146,5 +146,10 @@
             android:name="campaignId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/preferencesFragment"
+        android:name="com.honeymilk.shop.ui.preferences.PreferencesFragment"
+        android:label="@string/label_preferences"
+        tools:layout="@layout/fragment_preferences" />
 
 </navigation>

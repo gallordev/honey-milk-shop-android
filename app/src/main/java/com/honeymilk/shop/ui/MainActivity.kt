@@ -34,7 +34,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             setOf(
                 R.id.homeFragment,
                 R.id.campaignListFragment,
-                R.id.designListFragment
+                R.id.designListFragment,
+                R.id.preferencesFragment
             )
         )
         binding.topAppBar.setupWithNavController(navController, appBarConfiguration)
@@ -82,7 +83,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val bottomNavDestinations = setOf(
             R.id.homeFragment,
             R.id.campaignListFragment,
-            R.id.designListFragment
+            R.id.designListFragment,
+            R.id.preferencesFragment
         )
         binding.contentMain.bottomNavigation.isGone = !bottomNavDestinations.contains(destination.id)
     }

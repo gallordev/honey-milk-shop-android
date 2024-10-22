@@ -11,5 +11,6 @@ object FirebaseKeys {
     const val CAMPAIGNS_COLLECTION = "campaigns"
     const val DESIGNS_COLLECTION = "designs"
     const val ORDERS_COLLECTION = "orders"
+    const val PREFERENCES_COLLECTION = "preferences"
 
 }
