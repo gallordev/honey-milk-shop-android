@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
-            android:text="@{orderItem.color}"
+            android:text="@{orderItem.color  + ` | ` + orderItem.type  + ` | ` + orderItem.size}"
             android:textAppearance="?attr/textAppearanceBody2"
             app:layout_constraintBottom_toTopOf="@id/txt_design_price"
             app:layout_constraintStart_toEndOf="@id/imageView_design_image"

@@ -10,8 +10,11 @@ import com.honeymilk.shop.model.Order
 import com.honeymilk.shop.repository.CampaignRepository
 import com.honeymilk.shop.repository.OrderRepository
 import com.honeymilk.shop.utils.Resource
+import com.honeymilk.shop.utils.toSnakeCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,6 +54,17 @@ class CampaignDetailViewModel @Inject constructor(
             orderRepository.getOrders(campaignId).collect {
                 _campaignOrders.value = it
             }
+        }
+    }
+
+    fun getCampaignName(): String {
+        val campaignName = campaign.value?.data?.name
+        if (campaignName.isNullOrEmpty()) {
+            val dateFormat = SimpleDateFormat("MM")
+            val date = Date()
+            return dateFormat.format(date).toSnakeCase()
+        } else {
+            return campaignName.toSnakeCase()
         }
     }
 

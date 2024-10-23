@@ -12,7 +12,6 @@ import com.honeymilk.shop.repository.AuthRepository
 import com.honeymilk.shop.repository.DesignRepository
 import com.honeymilk.shop.utils.FirebaseKeys.CREATED_AT_FIELD
 import com.honeymilk.shop.utils.FirebaseKeys.DESIGNS_COLLECTION
-import com.honeymilk.shop.utils.FirebaseKeys.PREFERENCES_COLLECTION
 import com.honeymilk.shop.utils.FirebaseKeys.USERS_COLLECTION
 import com.honeymilk.shop.utils.ImageCompressorHelper
 import com.honeymilk.shop.utils.Resource
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
-import java.util.HashMap
 import java.util.UUID
 import javax.inject.Inject
 

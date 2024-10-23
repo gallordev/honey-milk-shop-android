@@ -18,11 +18,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentCampaignDetailBinding
 import com.honeymilk.shop.ui.order.OrderExportHelper
 import com.honeymilk.shop.utils.BaseFragment
+import com.honeymilk.shop.utils.PreferencesHelper
 import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,7 +51,17 @@ class CampaignDetailFragment : BaseFragment<FragmentCampaignDetailBinding>(
                         val orders = it.data ?: emptyList()
                         lifecycleScope.launch {
                             orderExportHelper.exportOrdersToExcel(orders, uri, requireContext()).onSuccess {
-                                Toast.makeText(requireContext(), "Campaign Orders Exported Correctly", Toast.LENGTH_SHORT).show()
+                                PreferencesHelper.incrementCounter(requireContext())
+                                Snackbar.make(
+                                    requireActivity().findViewById(android.R.id.content),
+                                    "Campaign Orders Exported Correctly",
+                                    Snackbar.LENGTH_LONG
+                                ).setAction("Open") {
+                                        val intent = Intent(Intent.ACTION_VIEW)
+                                        intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        startActivity(Intent.createChooser(intent, "Open with"))
+                                }.show()
                             }.onFailure {
                                 Toast.makeText(requireContext(), "Error Exporting Campaign Orders", Toast.LENGTH_SHORT).show()
                             }
@@ -68,10 +80,13 @@ class CampaignDetailFragment : BaseFragment<FragmentCampaignDetailBinding>(
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.export_orders -> {
+
+                        val currentCounter = PreferencesHelper.getCounter(requireContext())
+
                         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                             addCategory(Intent.CATEGORY_OPENABLE)
                             type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                            putExtra(Intent.EXTRA_TITLE, "orders.xlsx")
+                            putExtra(Intent.EXTRA_TITLE, "${campaignDetailViewModel.getCampaignName()}_$currentCounter.xlsx")
                         }
                         launcher.launch(intent)
                         true

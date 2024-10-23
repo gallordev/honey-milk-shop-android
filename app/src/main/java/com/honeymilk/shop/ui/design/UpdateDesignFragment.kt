@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.honeymilk.shop.databinding.FragmentDesignFormBinding
 import com.honeymilk.shop.model.Design
+import com.honeymilk.shop.ui.preferences.PreferencesViewModel
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
@@ -27,6 +28,7 @@ class UpdateDesignFragment : BaseFragment<FragmentDesignFormBinding>(FragmentDes
     private var designImageURL: String = ""
     private val args: UpdateDesignFragmentArgs by navArgs()
     private val updateDesignViewModel: UpdateDesignViewModel by viewModels()
+    private val preferencesViewModel: PreferencesViewModel by viewModels()
     private val launcher: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             uri?.let {
@@ -36,7 +38,23 @@ class UpdateDesignFragment : BaseFragment<FragmentDesignFormBinding>(FragmentDes
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        updateDesignViewModel.getDesign(args.designId)
+        preferencesViewModel.preferences.observe(viewLifecycleOwner) {
+            val resource = it ?: return@observe
+            when(resource) {
+                is Resource.Error -> {
+                    handleLoadingState(isLoading = false)
+                    showErrorMessage(resource.message ?: "Unknown Error")
+                }
+                is Resource.Loading -> {
+                    handleLoadingState(isLoading = true)
+                }
+                is Resource.Success -> {
+                    handleLoadingState(isLoading = false)
+                    binding.presentationsGroup.setFormItems(resource.data?.typeList?.toTypedArray() ?: emptyArray())
+                    updateDesignViewModel.getDesign(args.designId)
+                }
+            }
+        }
         updateDesignViewModel.design.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
             if (resource is Resource.Success) {

@@ -58,7 +58,7 @@ class OrderExportHelper {
                     val sizes = order.items.joinToString("\n") { it.size }
                     val subtotal = order.getSubtotal().toString()
                     val shippingCompany = order.shippingCompany
-                    val isShippingPaid = if (order.isShippingPaid) "SI" else "NO"
+                    val isShippingPaid = if (order.shippingCompany.isNotBlank() || order.trackingCode.isNotBlank()) "SI" else "NO"
                     val extras = order.extras
                     val trackingCode = order.trackingCode
 

@@ -1,5 +1,7 @@
 package com.honeymilk.shop.ui
 
+import android.graphics.Rect
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -9,6 +11,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.ActivityMainBinding
@@ -39,7 +42,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             )
         )
         binding.topAppBar.setupWithNavController(navController, appBarConfiguration)
-        binding.contentMain.bottomNavigation.setupWithNavController(navController)
+
+        NavigationUI.setupWithNavController(binding.contentMain.bottomNavigation, navController)
 
         val authDestinations = setOf(
             R.id.loginFragment,
@@ -59,6 +63,26 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
 
         navController.addOnDestinationChangedListener(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val decorView = window.decorView
+            decorView.setOnApplyWindowInsetsListener { v, insets ->
+                val gestureInsets = insets.systemGestureInsets
+                val leftInset = gestureInsets.left
+                val rightInset = gestureInsets.right
+
+                // Adjust these values to define the exclusion rectangle
+                val exclusionRect = Rect(
+                    binding.topAppBar.left - leftInset,
+                    binding.topAppBar.top,
+                    binding.topAppBar.right + rightInset,
+                    binding.topAppBar.bottom
+                )
+
+                window.systemGestureExclusionRects = listOf(exclusionRect)
+                insets
+            }
+        }
 
     }
 

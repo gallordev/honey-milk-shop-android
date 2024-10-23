@@ -14,6 +14,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.honeymilk.shop.databinding.FragmentDesignFormBinding
 import com.honeymilk.shop.model.Design
+import com.honeymilk.shop.model.Presentation
+import com.honeymilk.shop.ui.preferences.PreferencesViewModel
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
@@ -26,6 +28,7 @@ class NewDesignFragment : BaseFragment<FragmentDesignFormBinding>(FragmentDesign
     private var designImageURL: String = ""
     private var designId: String = ""
     private val newDesignViewModel: NewDesignViewModel by viewModels()
+    private val preferencesViewModel: PreferencesViewModel by viewModels()
     private val launcher: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             uri?.let {
@@ -39,6 +42,23 @@ class NewDesignFragment : BaseFragment<FragmentDesignFormBinding>(FragmentDesign
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
+            preferencesViewModel.preferences.observe(viewLifecycleOwner) {
+                val resource = it ?: return@observe
+                when(resource) {
+                    is Resource.Error -> {
+                        handleLoadingState(isLoading = false)
+                        showErrorMessage(resource.message ?: "Unknown Error")
+                    }
+                    is Resource.Loading -> {
+                        handleLoadingState(isLoading = true)
+                    }
+                    is Resource.Success -> {
+                        handleLoadingState(isLoading = false)
+                        presentationsGroup.setFormItems(resource.data?.typeList?.toTypedArray() ?: emptyArray())
+                    }
+                }
+            }
+
             newDesignViewModel.resource.observe(viewLifecycleOwner) {
                 val resource = it ?: return@observe
                 when(resource) {

@@ -15,6 +15,13 @@ fun String.toValidFloat(): Float {
     return this.toFloatOrNull() ?: 0f
 }
 
+fun String.toSnakeCase(): String {
+    return this
+        .replace(Regex("([a-z])([A-Z])"), "$1_$2") // Replace camel case with underscores
+        .replace(" ", "_") // Replace spaces with underscores
+        .lowercase() // Convert to lowercase
+}
+
 fun TextInputLayout.setText(value: String) {
     this.editText?.setText(value)
 }

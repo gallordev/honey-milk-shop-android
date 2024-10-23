@@ -18,6 +18,7 @@ import com.honeymilk.shop.model.Customer
 import com.honeymilk.shop.model.Order
 import com.honeymilk.shop.model.OrderItem
 import com.honeymilk.shop.ui.design.DesignListDialogFragment
+import com.honeymilk.shop.ui.preferences.PreferencesViewModel
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
 import com.honeymilk.shop.utils.getText
@@ -35,6 +36,7 @@ class UpdateOrderFragment :
     private val args: UpdateOrderFragmentArgs by navArgs()
     private val orderDetailViewModel: OrderDetailViewModel by viewModels()
     private val updateOrderViewModel: UpdateOrderViewModel by viewModels()
+    private val preferencesViewModel: PreferencesViewModel by viewModels()
     private lateinit var launcher: ActivityResultLauncher<ScanOptions>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +54,23 @@ class UpdateOrderFragment :
 
         val dialog = DesignListDialogFragment(updateOrderViewModel::addOrderItems)
 
-        orderDetailViewModel.getOrder(args.campaignId, args.orderId)
+        preferencesViewModel.preferences.observe(viewLifecycleOwner) {
+            val resource = it ?: return@observe
+            when(resource) {
+                is Resource.Error -> {
+                    handleLoadingState(isLoading = false)
+                    showErrorMessage(resource.message ?: "Unknown Error")
+                }
+                is Resource.Loading -> {
+                    handleLoadingState(isLoading = true)
+                }
+                is Resource.Success -> {
+                    handleLoadingState(isLoading = false)
+                    orderDetailViewModel.getOrder(args.campaignId, args.orderId)
+                }
+            }
+        }
+
         orderDetailViewModel.order.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
             if (resource is Resource.Success) {
@@ -138,14 +156,22 @@ class UpdateOrderFragment :
                 }
             }
 
+            val colorItems: Array<String> = preferencesViewModel
+                .preferences.value?.data?.colorList?.toTypedArray() ?: emptyArray()
+
             (menuColor.editText as? MaterialAutoCompleteTextView)?.apply {
+                setSimpleItems(colorItems)
                 setText(orderItem.color, false)
                 setOnItemClickListener { _, view, _, _ ->
                     orderItem.color = (view as TextView).text.toString()
                 }
             }
 
+            val sizeItems: Array<String> = preferencesViewModel
+                .preferences.value?.data?.sizeList?.toTypedArray() ?: emptyArray()
+
             (menuSize.editText as? MaterialAutoCompleteTextView)?.apply {
+                setSimpleItems(sizeItems)
                 setText(orderItem.size, false)
                 setOnItemClickListener { _, view, _, _ ->
                     orderItem.size = (view as TextView).text.toString()
@@ -197,6 +223,7 @@ class UpdateOrderFragment :
     private fun handleLoadingState(isLoading: Boolean) {
         binding.btnSave.hide(isLoading)
         binding.progressIndicator.hide(!isLoading)
+        binding.btnAddOrderItem.isEnabled = !isLoading
     }
 
 }
