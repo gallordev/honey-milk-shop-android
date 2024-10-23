@@ -27,10 +27,6 @@ fun View.hide(hide: Boolean) {
     this.visibility = if (hide) View.INVISIBLE else View.VISIBLE
 }
 
-fun View.isGone(isGone: Boolean) {
-    this.visibility = if (isGone) View.GONE else View.VISIBLE
-}
-
 object Extensions {
     fun Float.toCurrencyFormat(): String {
         val format: NumberFormat = NumberFormat.getCurrencyInstance()

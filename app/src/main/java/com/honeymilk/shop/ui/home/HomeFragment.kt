@@ -6,16 +6,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentHomeBinding
 import com.honeymilk.shop.ui.AuthStatusViewModel
 import com.honeymilk.shop.utils.BaseFragment
-import com.honeymilk.shop.utils.Resource
-import com.honeymilk.shop.utils.isGone
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,7 +28,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (user.id.isBlank()) {
                 findNavController().navigate(R.id.loginFragment)
             } else {
-                binding.homeView.isGone(false)
+                binding.homeView.isGone = false
 //                homeViewModel.loadLastCampaign()
             }
         }

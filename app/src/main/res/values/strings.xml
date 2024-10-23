@@ -133,4 +133,8 @@
     <string name="title_colors">Colors</string>
     <string name="btn_add_new_color">Add New color</string>
     <string name="title_add_new_color">Add new color</string>
+    <string name="txt_presentations">Presentations</string>
+    <string name="txt_size">Size</string>
+    <string name="title_add_new_size">Add New Size</string>
+    <string name="title_add_new_type">Add New Presentation</string>
 </resources>

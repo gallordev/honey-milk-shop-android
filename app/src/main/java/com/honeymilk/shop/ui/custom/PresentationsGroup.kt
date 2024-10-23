@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import androidx.core.view.isGone
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textfield.TextInputLayout
 import com.honeymilk.shop.R
 import com.honeymilk.shop.model.Presentation
 import com.honeymilk.shop.utils.getText
-import com.honeymilk.shop.utils.isGone
 
 class PresentationsGroup : LinearLayout {
 
@@ -107,7 +107,7 @@ class PresentationsGroup : LinearLayout {
                     for (view in viewsMap) {
                         with(view) {
                             (value[CHECK_BOX_KEY] as MaterialCheckBox).isChecked = isChecked
-                            (value[INPUT_TEXT_KEY] as View).isGone(!isChecked)
+                            (value[INPUT_TEXT_KEY] as View).isGone = !isChecked
                         }
                     }
                     isUpdatingChildren = false
@@ -118,7 +118,7 @@ class PresentationsGroup : LinearLayout {
             MaterialCheckBox.OnCheckedStateChangedListener { _: MaterialCheckBox?, _: Int ->
                 viewsMap.forEach {
                     val isChecked = (it.value[CHECK_BOX_KEY] as MaterialCheckBox).isChecked
-                    (it.value[INPUT_TEXT_KEY] as View).isGone(!isChecked)
+                    (it.value[INPUT_TEXT_KEY] as View).isGone = !isChecked
                 }
                 if (!isUpdatingChildren) {
                     setParentState(

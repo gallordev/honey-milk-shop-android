@@ -1,35 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:orientation="vertical"
-    android:padding="@dimen/screen_padding"
     tools:context=".ui.preferences.PreferencesFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_colors" />
+        android:clipToPadding="false"
+        android:padding="@dimen/screen_padding">
 
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_16dp" />
+        <TextView
+            android:id="@+id/titleColors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_colors"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/colorsChipGroup"
-        android:layout_marginTop="@dimen/margin_8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerColors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            app:layout_constraintTop_toBottomOf="@id/titleColors" />
 
-    <Button
-        android:id="@+id/btn_add_new_color"
-        style="@style/Widget.Material3.Button.TonalButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
-        android:text="@string/btn_add_new_color"/>
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/colorsChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            app:layout_constraintTop_toBottomOf="@id/dividerColors" />
 
+        <Button
+            android:id="@+id/btn_add_new_color"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:contentDescription="@string/desc_add_button"
+            android:text="@string/btn_add_new_color"
+            app:icon="@drawable/ic_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colorsChipGroup" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/titleTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/txt_presentations"
+            app:layout_constraintTop_toBottomOf="@id/btn_add_new_color" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            app:layout_constraintTop_toBottomOf="@id/titleTypes" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/typesChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            app:layout_constraintTop_toBottomOf="@id/dividerTypes" />
+
+        <Button
+            android:id="@+id/btn_add_new_type"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:contentDescription="@string/desc_add_button"
+            android:text="@string/title_add_new_type"
+            app:icon="@drawable/ic_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/typesChipGroup" />
+
+        <TextView
+            android:id="@+id/titleSizes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:text="@string/txt_size"
+            app:layout_constraintTop_toBottomOf="@id/btn_add_new_type" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerSizes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            app:layout_constraintTop_toBottomOf="@id/titleSizes" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/sizesChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            app:layout_constraintTop_toBottomOf="@id/dividerSizes" />
+
+        <Button
+            android:id="@+id/btn_add_new_size"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:contentDescription="@string/desc_add_button"
+            android:text="@string/title_add_new_size"
+            app:icon="@drawable/ic_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sizesChipGroup" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.1"
+            android:layout_marginTop="-16dp"
+            android:indeterminate="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

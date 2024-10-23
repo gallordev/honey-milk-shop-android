@@ -112,12 +112,9 @@ class DesignRepositoryImpl @Inject constructor(
 
     override suspend fun setPreferences(preferences: Preferences): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
-
         val ref = firestore.collection(USERS_COLLECTION)
             .document(auth.currentUserId)
-
-        ref.set(preferences.preferences).await()
-
+        ref.set(preferences).await()
         emit(Resource.Success("YES"))
     }.catch {
         emit(Resource.Error(it.message.toString()))

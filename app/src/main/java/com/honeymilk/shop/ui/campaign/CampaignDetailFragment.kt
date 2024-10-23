@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuProvider
+import androidx.core.view.isGone
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,7 +24,6 @@ import com.honeymilk.shop.databinding.FragmentCampaignDetailBinding
 import com.honeymilk.shop.ui.order.OrderExportHelper
 import com.honeymilk.shop.utils.BaseFragment
 import com.honeymilk.shop.utils.Resource
-import com.honeymilk.shop.utils.isGone
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -117,7 +117,7 @@ class CampaignDetailFragment : BaseFragment<FragmentCampaignDetailBinding>(
                             .into(binding.campaignImage)
                         campaignName.text = resource.data?.name
                         campaignDescription.text = resource.data?.description
-                        campaignDescription.isGone(resource.data?.description.isNullOrEmpty())
+                        campaignDescription.isGone = resource.data?.description.isNullOrEmpty()
                     }
                 }
 
