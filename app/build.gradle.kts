@@ -16,8 +16,8 @@ android {
         applicationId = "com.honeymilk.shop"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "pre-alpha-2.0"
+        versionCode = 3
+        versionName = "v0.2.1-pre-alpha"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
