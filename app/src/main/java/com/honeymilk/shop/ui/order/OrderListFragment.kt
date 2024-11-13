@@ -3,6 +3,7 @@ package com.honeymilk.shop.ui.order
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,6 +24,7 @@ class OrderListFragment : BaseFragment<FragmentOrderListBinding>(FragmentOrderLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         orderListAdapter = OrderListAdapter(
             onOrderClick = {
+                campaignDetailViewModel.searchQuery.value = ""
                 findNavController().navigate(
                     CampaignDetailFragmentDirections.actionCampaignDetailFragmentToOrderDetailFragment(
                         campaignDetailViewModel.campaign.value?.data?.id ?: "",
@@ -50,16 +52,15 @@ class OrderListFragment : BaseFragment<FragmentOrderListBinding>(FragmentOrderLi
                 }
             }
         )
+
+        binding.textFieldSearch.editText?.addTextChangedListener {
+            campaignDetailViewModel.searchQuery.value = it.toString()
+        }
+
         binding.recyclerViewOrderList.adapter = orderListAdapter
-        campaignDetailViewModel.campaignOrders.observe(viewLifecycleOwner) {
-            val resource = it ?: return@observe
-            when(resource) {
-                is Resource.Success -> {
-                    orderListAdapter.submitList(resource.data)
-                    println(resource.data)
-                }
-                else -> {}
-            }
+        campaignDetailViewModel.filteredCampaignOrders.observe(viewLifecycleOwner) {
+            val orderList = it ?: return@observe
+            orderListAdapter.submitList(orderList)
         }
         campaignDetailViewModel.result.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe

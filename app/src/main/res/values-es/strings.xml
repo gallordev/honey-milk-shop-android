@@ -1,37 +1,48 @@
 <resources>
     <string name="app_name">Honey Milk Shop</string>
 
-    <string name="btn_add">Añadir</string>
-    <string name="btn_add_date_range">Añadir Rango de Fechas</string>
-    <string name="btn_add_image">Añadir Imagen</string>
+    <!-- Buttons -->
+    <string name="btn_add">Agregar</string>
+    <string name="btn_add_date_range">Agregar Rango de Fechas</string>
+    <string name="btn_add_image">Agregar Imagen</string>
+    <string name="btn_add_new_color">Agregar Nuevo Color</string>
+    <string name="btn_add_new_size">Agregar Nuevo Tamaño</string>
+    <string name="btn_add_new_type">Agregar Nueva Presentación</string>
     <string name="btn_cancel">Cancelar</string>
+    <string name="btn_close">Cerrar</string>
     <string name="btn_copy_to_clipboard">Copiar al Portapapeles</string>
+    <string name="btn_delete_design">Eliminar Diseño</string>
     <string name="btn_delete_order">Eliminar Pedido</string>
     <string name="btn_designs_list">Lista de Diseños</string>
     <string name="btn_edit_order">Editar Pedido</string>
     <string name="btn_forgot_password">¿Olvidaste tu contraseña? Haz clic aquí.</string>
-    <string name="btn_later">Más Tarde</string>
-    <string name="btn_login">Iniciar Sesión</string>
+    <string name="btn_later">Más tarde</string>
+    <string name="btn_login">Iniciar sesión</string>
     <string name="btn_new_campaign">Nueva Campaña</string>
     <string name="btn_new_design">Nuevo Diseño</string>
     <string name="btn_new_order">Nuevo Pedido</string>
-    <string name="btn_ok">Aceptar</string>
+    <string name="btn_no">No</string>
+    <string name="btn_ok">OK</string>
     <string name="btn_password_recovery">Enviar Correo de Recuperación de Contraseña</string>
     <string name="btn_save">Guardar</string>
     <string name="btn_sign_up">Registrarse</string>
-    <string name="btn_sure">Claro</string>
+    <string name="btn_sure">Seguro</string>
+    <string name="btn_update_design">Actualizar Diseño</string>
+    <string name="btn_yes">Sí</string>
 
+    <!-- Body Messages -->
+    <string name="body_delete_order">¿Estás seguro de que deseas eliminar el pedido %1$s?</string>
     <string name="body_password_recovery">Recibirás instrucciones para restablecer tu contraseña.</string>
 
-    <string name="desc_add_button">botón añadir</string>
+    <!-- Descriptions -->
+    <string name="desc_add_button">botón de agregar</string>
     <string name="desc_campaign_image">Imagen de la Campaña</string>
     <string name="desc_design_image">Imagen del Diseño</string>
-    <string name="desc_fab">Añadir</string>
-    <string name="desc_remove_button">botón eliminar</string>
+    <string name="desc_fab">Agregar</string>
+    <string name="desc_remove_button">botón de eliminar</string>
 
-    <string name="hello_blank_fragment">Hola fragmento en blanco</string>
-
-    <string name="hint_add_extras">Añadir Extras</string>
+    <!-- Hints -->
+    <string name="hint_add_extras">Agregar Extras</string>
     <string name="hint_address">Dirección</string>
     <string name="hint_confirm_password">Confirmar Contraseña</string>
     <string name="hint_description">Descripción</string>
@@ -43,12 +54,14 @@
     <string name="hint_password">Contraseña</string>
     <string name="hint_phone_number">Número de Teléfono</string>
     <string name="hint_price">Precio</string>
-    <string name="hint_shipping_company">Compañía de Envío</string>
+    <string name="hint_search">Buscar</string>
+    <string name="hint_shipping_company">Empresa de Envío</string>
     <string name="hint_shipping_price">Precio de Envío</string>
     <string name="hint_tracking_code">Código de Seguimiento</string>
 
-    <string name="label_campaigns">Campañas</string>
+    <!-- Labels -->
     <string name="label_campaign_detail">Detalle de la Campaña</string>
+    <string name="label_campaigns">Campañas</string>
     <string name="label_designs">Diseños</string>
     <string name="label_home">Inicio</string>
     <string name="label_login">Iniciar Sesión</string>
@@ -57,35 +70,59 @@
     <string name="label_new_order">Nuevo Pedido</string>
     <string name="label_order_detail">Detalle del Pedido</string>
     <string name="label_password_recovery">Recuperación de Contraseña</string>
+    <string name="label_preferences">Preferencias</string>
     <string name="label_sign_up">Registrarse</string>
-    <string name="label_update_order">Actualizar Pedido</string>
+    <string name="label_update_campaign">Actualizar Campaña</string>
     <string name="label_update_design">Actualizar Diseño</string>
+    <string name="label_update_order">Actualizar Pedido</string>
 
+    <!-- Menu Items -->
     <string name="menu_color">Color</string>
+    <string name="menu_delete_campaign">Eliminar Campaña</string>
+    <string name="menu_delete_design">Eliminar Diseño</string>
     <string name="menu_export_orders">Exportar Pedidos</string>
     <string name="menu_group">Grupo</string>
     <string name="menu_logout">Cerrar Sesión</string>
     <string name="menu_new_campaign">Nueva Campaña</string>
     <string name="menu_new_design">Nuevo Diseño</string>
     <string name="menu_new_order">Nuevo Pedido</string>
-    <string name="menu_size">Talla</string>
+    <string name="menu_size">Tamaño</string>
     <string name="menu_type">Tipo</string>
+    <string name="menu_update_campaign">Actualizar Campaña</string>
+    <string name="menu_update_design">Actualizar Diseño</string>
 
-    <string name="message_add_new_presentations">¿Quieres añadir diferentes presentaciones (sudadera con capucha, sudadera, etc…) a este diseño? Puedes añadirlas más tarde.</string>
+    <!-- Messages -->
+    <string name="message_add_new_presentations">¿Deseas agregar diferentes presentaciones (sudadera, camiseta, etc.) a este diseño? Puedes agregarlas más tarde.</string>
+    <string name="message_delete_campaign">Todos los pedidos asociados con esta campaña también serán eliminados</string>
+    <string name="message_delete_design">¿Estás seguro de que deseas eliminar este diseño? Esta acción no se puede deshacer.</string>
 
+    <!-- Prefix -->
     <string name="prefix_price">$</string>
 
-    <string name="switch_label_campaign_status">Establecer esta campaña como activa</string>
+    <!-- Switches -->
+    <string name="switch_label_campaign_status">Marcar esta campaña como activa</string>
     <string name="switch_shipping_paid">Envío Pagado</string>
 
-    <string name="title_add_new_presentations">Añadir nuevas presentaciones</string>
+    <!-- Titles -->
+    <string name="title_add_new_color">Agregar nuevo color</string>
+    <string name="title_add_new_presentations">Agregar nuevas presentaciones</string>
+    <string name="title_add_new_size">Agregar Nuevo Tamaño</string>
+    <string name="title_add_new_type">Agregar Nueva Presentación</string>
+    <string name="title_colors">Colores</string>
+    <string name="title_delete_campaign">¿Estás seguro de eliminar la campaña %1$s?</string>
+    <string name="title_delete_design">¿Eliminar %1$s?</string>
+    <string name="title_delete_order">Eliminar Pedido</string>
     <string name="title_password_recovery">Recuperación de Contraseña.</string>
     <string name="title_select_order_products">Seleccionar Productos del Pedido</string>
 
+    <!-- Toast   -->
+    <string name="toast_create_campaign">Porfavor crea una campaña primero</string>
+
+    <!-- Text -->
     <string name="txt_all_presentations">Todas las Presentaciones</string>
-    <string name="txt_campaign_items_by_group">Artículos de la Campaña por Grupo</string>
+    <string name="txt_campaign_items_by_group">Elementos de la Campaña por Grupo</string>
     <string name="txt_campaign_status">Esta campaña está actualmente activa</string>
-    <string name="txt_campaign_summary">Artículos de la Campaña por Color</string>
+    <string name="txt_campaign_summary">Elementos de la Campaña por Color</string>
     <string name="txt_color_black">Negro</string>
     <string name="txt_color_gray">Gris</string>
     <string name="txt_color_light_brown">Marrón Claro</string>
@@ -99,7 +136,7 @@
     <string name="txt_customer_info">Información del Cliente</string>
     <string name="txt_extra_large">XL</string>
     <string name="txt_extras">Extras</string>
-    <string name="txt_hoodie">Sudadera con Capucha</string>
+    <string name="txt_hoodie">Capucha</string>
     <string name="txt_large">L</string>
     <string name="txt_medium">M</string>
     <string name="txt_order_extras">Extras del Pedido</string>
@@ -108,12 +145,12 @@
     <string name="txt_order_items">Artículos del Pedido</string>
     <string name="txt_order_items_subtotal">Subtotal de Artículos del Pedido:</string>
     <string name="txt_shipment_info">Información de Envío</string>
+    <string name="txt_size">Tamaño</string>
     <string name="txt_small">S</string>
     <string name="txt_t_shirt">Camiseta</string>
     <string name="txt_total">Total</string>
-    <string name="txt_cancelled">Cancelado</string>
-    <string name="body_delete_order">Esta seguro de borrar el pedido de %1$s?</string>
-    <string name="title_delete_order">Eliminar Pedido</string>
-    <string name="btn_yes">Si</string>
-    <string name="btn_no">No</string>
+    <string name="txt_work_in_progress">Trabajo en Progreso</string>
+    <string name="txt_cancelled">Cancelar</string>
+    <string name="txt_presentations">Presentaciones</string>
+
 </resources>
