@@ -16,8 +16,8 @@ android {
         applicationId = "com.honeymilk.shop"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "v0.2.1-pre-alpha"
+        versionCode = 4
+        versionName = "v0.2.2-pre-alpha"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -89,5 +89,7 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.2.3")
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    implementation("io.noties.markwon:core:4.6.2")
 
 }

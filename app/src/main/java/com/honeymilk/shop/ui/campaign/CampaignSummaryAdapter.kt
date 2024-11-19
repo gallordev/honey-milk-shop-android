@@ -11,11 +11,12 @@ class CampaignSummaryAdapter(
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    override fun getItemCount() = 2
+    override fun getItemCount() = 3
 
     override fun createFragment(position: Int): Fragment = when (position) {
         0 -> OrderListFragment()
         1 -> CampaignSummaryFragment()
+        2 -> RawOrderListFragment()
         else -> throw IllegalStateException("Invalid position: $position")
     }
 
