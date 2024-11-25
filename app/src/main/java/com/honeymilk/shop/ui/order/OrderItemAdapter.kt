@@ -3,6 +3,7 @@ package com.honeymilk.shop.ui.order
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.LayoutOrderItemItemBinding
@@ -23,6 +24,7 @@ class OrderItemAdapter : DataBoundListAdapter<OrderItem, LayoutOrderItemItemBind
     override fun bind(binding: LayoutOrderItemItemBinding, item: OrderItem) {
         with(binding) {
             orderItem = item
+            txtComment.isGone = item.comment.isEmpty()
             txtDesignPrice.text = "${item.getTypePrice().toCurrencyFormat()} x ${item.quantity}"
             txtDesignTotal.text = item.getItemTotal().toCurrencyFormat()
         }

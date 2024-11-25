@@ -1,11 +1,14 @@
 package com.honeymilk.shop.ui.order
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.children
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -93,6 +96,7 @@ class UpdateOrderFragment :
         binding.textFieldTrackingCode.setEndIconOnClickListener {
             launcher.launch(ScanOptions())
         }
+
         updateOrderViewModel.resource.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
             when (resource) {
@@ -124,12 +128,13 @@ class UpdateOrderFragment :
     private fun loadForm(order: Order) {
         with(binding) {
             textFieldName.setText(order.customer.name)
+            textFieldInstagramUser.setText(order.customer.instagramUsername)
             textFieldEmail.setText(order.customer.email)
             textFieldPhoneNumber.setText(order.customer.phoneNumber)
             textFieldAddress.setText(order.customer.address)
             textFieldShippingCompany.setText(order.shippingCompany)
             textFieldShippingPrice.setText(order.shippingPrice)
-            switchShippingPaid.isChecked
+            switchShippingPaid.isChecked = order.shippingPaid
             textFieldTrackingCode.setText(order.trackingCode)
             textFieldExtras.setText(order.extras)
             textFieldExtrasTotal.setText(order.extrasTotal)
@@ -145,6 +150,24 @@ class UpdateOrderFragment :
         ).apply {
             root.id = orderItem.id
             this.orderItem = orderItem
+
+            btnAddComment.setOnClickListener {
+                textFieldComment.isGone = !textFieldComment.isGone
+            }
+
+            textFieldComment.isGone = orderItem.comment.isEmpty()
+
+            textFieldComment.setText(orderItem.comment)
+
+            textFieldComment.editText?.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+                override fun afterTextChanged(s: Editable?) {
+                    val comment = s.toString()
+                    orderItem.comment = comment
+                }
+            })
+
             val typeItems: Array<String> = orderItem.design.presentations
                 .map { it.name }.toTypedArray()
 
@@ -200,11 +223,13 @@ class UpdateOrderFragment :
     }
 
     private fun buildOrder(): Order {
+        val order = orderDetailViewModel.order.value?.data ?: Order()
         with(binding) {
-            return Order(
+            return order.copy(
                 id = args.orderId,
                 customer = Customer(
                     textFieldName.getText(),
+                    textFieldInstagramUser.getText(),
                     textFieldEmail.getText(),
                     textFieldAddress.getText(),
                     textFieldPhoneNumber.getText()
@@ -214,7 +239,7 @@ class UpdateOrderFragment :
                 extrasTotal = textFieldExtrasTotal.getText().toValidFloat(),
                 shippingCompany = textFieldShippingCompany.getText(),
                 shippingPrice = textFieldShippingPrice.getText().toValidFloat(),
-                isShippingPaid = switchShippingPaid.isChecked,
+                shippingPaid = switchShippingPaid.isChecked,
                 trackingCode = textFieldTrackingCode.getText()
             )
         }

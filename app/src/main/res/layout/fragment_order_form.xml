@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,6 +43,24 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField_instagramUser"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:hint="@string/hint_instagram_username"
+            app:endIconMode="clear_text"
+            app:layout_constraintTop_toBottomOf="@id/textField_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField_email"
             style="?attr/textInputFilledStyle"
             android:layout_width="match_parent"
@@ -49,7 +68,7 @@
             android:layout_marginTop="@dimen/margin_16dp"
             android:hint="@string/hint_email"
             app:endIconMode="clear_text"
-            app:layout_constraintTop_toBottomOf="@id/textField_name">
+            app:layout_constraintTop_toBottomOf="@id/textField_instagramUser">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

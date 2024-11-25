@@ -49,8 +49,10 @@
     <string name="hint_email">Correo Electrónico</string>
     <string name="hint_extras_total">Total de Extras</string>
     <string name="hint_final_campaign_date">Fecha Final</string>
+    <string name="hint_instagram_username">Usuario de Instagram</string>
     <string name="hint_initial_campaign_date">Fecha Inicial</string>
     <string name="hint_name">Nombre</string>
+    <string name="hint_order_item_comment">Comentario del Artículo</string>
     <string name="hint_password">Contraseña</string>
     <string name="hint_phone_number">Número de Teléfono</string>
     <string name="hint_price">Precio</string>
@@ -152,5 +154,6 @@
     <string name="txt_work_in_progress">Trabajo en Progreso</string>
     <string name="txt_cancelled">Cancelar</string>
     <string name="txt_presentations">Presentaciones</string>
+    <string name="btn_add_order_item_comment">Add comment</string>
 
 </resources>

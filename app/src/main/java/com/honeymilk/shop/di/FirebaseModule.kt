@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import com.google.firebase.firestore.firestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 
@@ -24,5 +25,8 @@ object FirebaseModule {
 
     @Provides
     fun storage(): FirebaseStorage = Firebase.storage
+
+    @Provides
+    fun messaging(): FirebaseMessaging = FirebaseMessaging.getInstance()
 
 }

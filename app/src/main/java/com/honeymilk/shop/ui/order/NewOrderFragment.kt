@@ -1,17 +1,18 @@
 package com.honeymilk.shop.ui.order
 
-import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.children
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentOrderFormBinding
@@ -107,6 +108,7 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
             return Order(
                 customer = Customer(
                     textFieldName.getText(),
+                    textFieldInstagramUser.getText(),
                     textFieldEmail.getText(),
                     textFieldAddress.getText(),
                     textFieldPhoneNumber.getText()
@@ -116,7 +118,7 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
                 extrasTotal = textFieldExtrasTotal.getText().toValidFloat(),
                 shippingCompany = textFieldShippingCompany.getText(),
                 shippingPrice = textFieldShippingPrice.getText().toValidFloat(),
-                isShippingPaid = switchShippingPaid.isChecked,
+                shippingPaid = switchShippingPaid.isChecked,
                 trackingCode = textFieldTrackingCode.getText()
             )
         }
@@ -141,6 +143,19 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
             this.orderItem = orderItem
             val typeItems: Array<String> = orderItem.design.presentations
                 .map { it.name }.toTypedArray()
+
+            btnAddComment.setOnClickListener {
+                textFieldComment.isGone = !textFieldComment.isGone
+            }
+
+            textFieldComment.editText?.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+                override fun afterTextChanged(s: Editable?) {
+                    val comment = s.toString()
+                    orderItem.comment = comment
+                }
+            })
 
             (menuType.editText as? MaterialAutoCompleteTextView)?.apply {
                 setSimpleItems(typeItems)

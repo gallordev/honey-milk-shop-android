@@ -107,19 +107,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         askNotificationPermission()
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Timber.w(task.exception, "Fetching FCM registration token failed")
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            Timber.d(token)
-        })
-
     }
 
     override fun onSupportNavigateUp(): Boolean =

@@ -12,7 +12,8 @@ data class OrderItem(
     var color: String = "",
     var type: String = "",
     var size: String = "",
-    var quantity: Int = 1
+    var quantity: Int = 1,
+    var comment: String = ""
 ) {
 
     @Exclude

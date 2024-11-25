@@ -15,7 +15,7 @@ data class Order(
     val extrasTotal: Float = 0f,
     val shippingCompany: String = "",
     val shippingPrice: Float = 0f,
-    val isShippingPaid: Boolean = false,
+    val shippingPaid: Boolean = false,
     val trackingCode: String = "",
     @ServerTimestamp val createdAt: Date = Date()
 ) {

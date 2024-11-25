@@ -131,8 +131,6 @@ class CampaignDetailFragment : BaseFragment<FragmentCampaignDetailBinding>(
                             .load(resource.data?.imageURL)
                             .into(binding.campaignImage)
                         campaignName.text = resource.data?.name
-                        campaignDescription.text = resource.data?.description
-                        campaignDescription.isGone = resource.data?.description.isNullOrEmpty()
                     }
                 }
 

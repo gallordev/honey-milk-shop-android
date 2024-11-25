@@ -44,12 +44,14 @@ class RawOrderListFragment : BaseFragment<FragmentRawOrderListBinding>(
         orders.forEachIndexed { index, order ->
             result.append("### Orden ${index + 1}\n")
             result.append("**Cliente:** ${order.customer.name}\n\n")
+            result.append("**Usuario de Instagram:** ${order.customer.instagramUsername}\n\n")
             result.append("**Correo:** ${order.customer.email}\n\n")
             result.append("**Teléfono:** \n${order.customer.phoneNumber}\n\n")
             result.append("**Dirección:** ${order.customer.address}\n\n")
             result.append("**Productos:**\n\n")
             order.items.forEach { item ->
-                result.append("- ${item.design.name} ${item.type} ${item.color} ${item.size} Qty: ${item.quantity}\n\n")
+                val comment = if (item.comment.isNotBlank()) "(${item.comment})" else ""
+                result.append("- ${item.design.name} ${item.type} ${item.color} ${item.size} Qty: ${item.quantity} $comment\n\n")
             }
             result.append("\n\n")
             if (order.extras.isNotEmpty()) {

@@ -24,11 +24,13 @@ class OrderExportHelper {
                 val headerRow = sheet.createRow(0)
                 val headers = listOf(
                     "NOMBRE",
+                    "USUARIO INSTAGRAM",
                     "CORREO",
                     "CANTIDAD",
                     "DISEÑO",
                     "COLOR DE PRENDA",
                     "TIPO DE PRENDA",
+                    "COMENTARIOS",
                     "TALLA",
                     "PAGO",
                     "PAQUETERIA",
@@ -48,6 +50,7 @@ class OrderExportHelper {
                 for ((rowIndex, order) in orders.withIndex()) {
                     val row: Row = sheet.createRow(rowIndex + 1)
                     val name = order.customer.name
+                    val igUser = order.customer.instagramUsername
                     val email = order.customer.email
                     val quantity = order.getTotalItemsQuantity().toString()
                     val designs = order.items.joinToString("\n") {
@@ -55,20 +58,23 @@ class OrderExportHelper {
                     }
                     val colors = order.items.joinToString("\n") { it.color }
                     val types = order.items.joinToString("\n") { it.type }
+                    val comments = order.items.joinToString("\n") { "* ${it.comment}" }
                     val sizes = order.items.joinToString("\n") { it.size }
                     val subtotal = order.getSubtotal().toString()
                     val shippingCompany = order.shippingCompany
-                    val isShippingPaid = if (order.shippingCompany.isNotBlank() || order.trackingCode.isNotBlank()) "SI" else "NO"
+                    val isShippingPaid = if (order.shippingPaid) "SI" else "NO"
                     val extras = order.extras
                     val trackingCode = order.trackingCode
 
                     val cells = listOf(
                         name,
+                        igUser,
                         email,
                         quantity,
                         designs,
                         colors,
                         types,
+                        comments,
                         sizes,
                         subtotal,
                         shippingCompany,
