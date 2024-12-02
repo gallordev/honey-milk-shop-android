@@ -3,9 +3,13 @@ package com.honeymilk.shop.ui.order
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toolbar
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.children
 import androidx.core.view.isGone
@@ -13,6 +17,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentOrderFormBinding
@@ -100,6 +106,38 @@ class NewOrderFragment : BaseFragment<FragmentOrderFormBinding>(FragmentOrderFor
         binding.btnSave.setOnClickListener {
             val order = buildOrder()
             newOrderViewModel.newOrder(args.campaignId, order)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleNavigation()
+            }
+        })
+
+        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.topAppBar)
+        toolbar.setNavigationOnClickListener {
+            handleNavigation()
+        }
+
+    }
+
+    private fun validateBack(): Boolean {
+        val order = buildOrder()
+        return order != Order()
+    }
+
+    private fun handleNavigation() {
+        if (validateBack()) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.title_warning))
+                .setMessage(getString(R.string.message_unsaved_changes))
+                .setPositiveButton(getString(R.string.btn_discard)) { _, _ ->
+                    findNavController().popBackStack()
+                }
+                .setNegativeButton(getString(R.string.btn_cancel), null)
+                .show()
+        } else {
+            findNavController().popBackStack()
         }
     }
 

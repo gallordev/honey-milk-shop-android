@@ -8,12 +8,14 @@
     <string name="btn_add_new_color">Add New color</string>
     <string name="btn_add_new_size">Add New Size</string>
     <string name="btn_add_new_type">Add New Presentation</string>
+    <string name="btn_add_order_item_comment">Add comment</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_close">Close</string>
     <string name="btn_copy_to_clipboard">Copy to Clipboard</string>
     <string name="btn_delete_design">Delete Design</string>
     <string name="btn_delete_order">Delete Order</string>
     <string name="btn_designs_list">Designs List</string>
+    <string name="btn_discard">Discard</string>
     <string name="btn_edit_order">Edit Order</string>
     <string name="btn_forgot_password">Forgot password? Click here.</string>
     <string name="btn_later">Later</string>
@@ -97,6 +99,7 @@
     <string name="message_add_new_presentations">Do you want to add different presentations (hoodie, crewneck, etc…) to this design? You can add them later.</string>
     <string name="message_delete_campaign">All orders associated with this campaign will also be deleted</string>
     <string name="message_delete_design">Are you sure you want to delete this design? This action cannot be undone.</string>
+    <string name="message_unsaved_changes">You have unsaved changes. Do you want to discard them?</string>
 
     <!-- Prefix -->
     <string name="prefix_price">$</string>
@@ -116,6 +119,7 @@
     <string name="title_delete_order">Delete Order</string>
     <string name="title_password_recovery">Password Recovery.</string>
     <string name="title_select_order_products">Select Order Products</string>
+    <string name="title_warning">Warning</string>
 
     <!-- Toast   -->
     <string name="toast_create_campaign">Please create a campaign first</string>
@@ -154,6 +158,5 @@
     <string name="txt_work_in_progress">Work in Progress</string>
     <string name="txt_cancelled">Cancelled</string>
     <string name="txt_presentations">Presentations</string>
-    <string name="btn_add_order_item_comment">Add comment</string>
 
 </resources>

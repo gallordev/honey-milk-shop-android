@@ -8,12 +8,14 @@
     <string name="btn_add_new_color">Agregar Nuevo Color</string>
     <string name="btn_add_new_size">Agregar Nuevo Tamaño</string>
     <string name="btn_add_new_type">Agregar Nueva Presentación</string>
+    <string name="btn_add_order_item_comment">Agregar comentario</string>
     <string name="btn_cancel">Cancelar</string>
     <string name="btn_close">Cerrar</string>
     <string name="btn_copy_to_clipboard">Copiar al Portapapeles</string>
     <string name="btn_delete_design">Eliminar Diseño</string>
     <string name="btn_delete_order">Eliminar Pedido</string>
     <string name="btn_designs_list">Lista de Diseños</string>
+    <string name="btn_discard">Descartar</string>
     <string name="btn_edit_order">Editar Pedido</string>
     <string name="btn_forgot_password">¿Olvidaste tu contraseña? Haz clic aquí.</string>
     <string name="btn_later">Más tarde</string>
@@ -97,6 +99,7 @@
     <string name="message_add_new_presentations">¿Deseas agregar diferentes presentaciones (sudadera, camiseta, etc.) a este diseño? Puedes agregarlas más tarde.</string>
     <string name="message_delete_campaign">Todos los pedidos asociados con esta campaña también serán eliminados</string>
     <string name="message_delete_design">¿Estás seguro de que deseas eliminar este diseño? Esta acción no se puede deshacer.</string>
+    <string name="message_unsaved_changes">Tienes cambios sin guardar. ¿Estás seguro de que deseas salir?</string>
 
     <!-- Prefix -->
     <string name="prefix_price">$</string>
@@ -116,6 +119,7 @@
     <string name="title_delete_order">Eliminar Pedido</string>
     <string name="title_password_recovery">Recuperación de Contraseña.</string>
     <string name="title_select_order_products">Seleccionar Productos del Pedido</string>
+    <string name="title_warning">Advertencia</string>
 
     <!-- Toast   -->
     <string name="toast_create_campaign">Porfavor crea una campaña primero</string>
@@ -154,6 +158,5 @@
     <string name="txt_work_in_progress">Trabajo en Progreso</string>
     <string name="txt_cancelled">Cancelar</string>
     <string name="txt_presentations">Presentaciones</string>
-    <string name="btn_add_order_item_comment">Add comment</string>
 
 </resources>
