@@ -85,8 +85,9 @@ class UpdateCampaignFragment : BaseFragment<FragmentCampaignFormBinding>(
         }
 
         binding.btnSave.setOnClickListener {
-            val campaign = getFormData()
-            updateCampaignViewModel.updateCampaign(campaign, campaignImageURL != campaign.imageURL)
+            val campaign = updateCampaignViewModel.campaign.value?.data ?: Campaign()
+            val campaignData = getFormData()
+            updateCampaignViewModel.updateCampaign(campaignData, campaignImageURL != campaign.imageURL)
         }
 
     }

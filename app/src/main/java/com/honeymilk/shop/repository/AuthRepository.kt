@@ -13,6 +13,7 @@ interface AuthRepository {
     suspend fun signUp(email: String, password: String): Flow<Resource<String>>
     suspend fun signIn(email: String, password: String): Flow<Resource<String>>
     suspend fun sendRecoveryEmail(email: String): Flow<Resource<String>>
+    suspend fun registerNotificationToken()
     suspend fun deleteAccount()
     suspend fun logout()
 

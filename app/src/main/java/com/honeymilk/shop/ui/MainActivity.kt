@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
+            authStatusViewModel.registerNotificationToken()
         } else {
             // TODO: Inform user that that your app will not show notifications.
         }
@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         )
         authStatusViewModel.currentUser.observe(this) { signedUser ->
             signedUser?.let {
+                askNotificationPermission()
                 if (authDestinations.contains(navController.currentDestination?.id)) {
                     val startDestination = navController.graph.startDestinationId
                     val navOptions = NavOptions.Builder()
@@ -104,9 +105,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 insets
             }
         }
-
-        askNotificationPermission()
-
     }
 
     override fun onSupportNavigateUp(): Boolean =

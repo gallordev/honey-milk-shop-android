@@ -27,4 +27,10 @@ class AuthStatusViewModel @Inject constructor(
         }
     }
 
+    fun registerNotificationToken() {
+        viewModelScope.launch {
+            authRepository.registerNotificationToken()
+        }
+    }
+
 }

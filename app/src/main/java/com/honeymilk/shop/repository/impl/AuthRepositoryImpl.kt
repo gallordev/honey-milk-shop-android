@@ -3,7 +3,9 @@ package com.honeymilk.shop.repository.impl
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import com.google.firebase.messaging.FirebaseMessaging
+import com.honeymilk.shop.model.Preferences
 import com.honeymilk.shop.model.User
 import com.honeymilk.shop.repository.AuthRepository
 import com.honeymilk.shop.utils.FirebaseKeys.USERS_COLLECTION
@@ -58,11 +60,6 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signIn(email: String, password: String): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         val authResult: AuthResult = auth.signInWithEmailAndPassword(email, password).await()
-        authResult.user?.let { user ->
-            val notificationToken: String = FirebaseMessaging.getInstance().token.await()
-            firestore.collection(USERS_COLLECTION)
-                .document(user.uid).set(mapOf("token" to notificationToken))
-        }
         emit(Resource.Success(authResult.user?.uid.toString()))
     }.catch {
         emit(Resource.Error(it.message.toString()))
@@ -82,6 +79,23 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun logout() {
         auth.signOut()
+    }
+
+    override suspend fun registerNotificationToken() {
+        auth.currentUser?.let { user ->
+            val notificationToken: String = FirebaseMessaging.getInstance().token.await()
+            Timber.d("notificationToken: $notificationToken")
+            val ref = firestore.collection(USERS_COLLECTION)
+                .document(user.uid)
+            val snapshot = ref.get().await()
+            val preferences = snapshot.toObject<Preferences>()
+            Timber.d("preferences: $preferences")
+            val updatedPreferences = preferences?.copy(notificationToken = notificationToken)
+            Timber.d("updatedPreferences: $updatedPreferences")
+            if (updatedPreferences != null) {
+                ref.set(updatedPreferences).await()
+            }
+        }
     }
 
 }

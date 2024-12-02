@@ -50,6 +50,9 @@ class CampaignDetailViewModel @Inject constructor(
                     ) || order.customer.email.contains(
                         query,
                         ignoreCase = true
+                    ) || order.customer.instagramUsername.contains(
+                        query,
+                        ignoreCase = true
                     )
                 } ?: emptyList()
             } else {
