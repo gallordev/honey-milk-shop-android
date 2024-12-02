@@ -3,12 +3,15 @@ package com.honeymilk.shop.ui.design
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.honeymilk.shop.R
 import com.honeymilk.shop.model.Design
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,12 +41,18 @@ class DesignListDialogFragment(
                 tempSelectedDesigns.remove(d)
             }
         })
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
-        viewModel.designs.observe(requireActivity()) {
+        viewModel.filteredDesigns.observe(requireActivity()) {
             val designs = it ?: return@observe
             adapter.submitList(designs)
         }
+
+        val searchField = view.findViewById<TextInputLayout>(R.id.textField_search)
+        searchField.editText?.addTextChangedListener {
+            viewModel.searchQuery.value = it.toString()
+        }
+
         builder.setPositiveButton(getString(R.string.btn_add)) { _, _ ->
             selectedDesigns = tempSelectedDesigns
             callBack?.invoke(selectedDesigns)

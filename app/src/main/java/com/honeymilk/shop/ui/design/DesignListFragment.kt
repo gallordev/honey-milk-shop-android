@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuProvider
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -65,9 +66,12 @@ class DesignListFragment :
         )
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
-        viewModel.designs.observe(viewLifecycleOwner) {
+        viewModel.filteredDesigns.observe(viewLifecycleOwner) {
             val designs = it ?: return@observe
             adapter.submitList(designs)
+        }
+        binding.textFieldSearch.editText?.addTextChangedListener {
+            viewModel.searchQuery.value = it.toString()
         }
     }
 

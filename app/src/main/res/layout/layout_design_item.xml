@@ -19,9 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
+        android:checkable="true"
         android:clickable="true"
         android:focusable="true"
-        android:checkable="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,25 +30,48 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/design_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:contentDescription="@string/desc_design_image"
                 android:scaleType="centerCrop"
                 app:imageFromUrl="@{design.imageURL}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
 
             <TextView
                 android:id="@+id/design_name"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/screen_padding"
-                android:text="@{design.name +  ` • ` + design.group}"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginStart="@dimen/margin_8dp"
+                android:text="@{design.name}"
+                android:textAlignment="textStart"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                app:layout_constraintTop_toBottomOf="@id/design_image" />
+                app:layout_constraintBottom_toTopOf="@id/design_group"
+                app:layout_constraintEnd_toStartOf="@id/btn_more"
+                app:layout_constraintStart_toEndOf="@id/design_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/design_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{design.group}"
+                android:layout_marginStart="@dimen/margin_8dp"
+                android:textAlignment="textStart"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_more"
+                app:layout_constraintStart_toEndOf="@id/design_image"
+                app:layout_constraintTop_toBottomOf="@id/design_name"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <Button
                 android:id="@+id/btn_more"
@@ -56,9 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_more_vert"
-                app:layout_constraintBottom_toBottomOf="@id/design_name"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/design_name" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
