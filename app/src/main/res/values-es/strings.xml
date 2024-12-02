@@ -23,6 +23,7 @@
     <string name="btn_new_campaign">Nueva Campaña</string>
     <string name="btn_new_design">Nuevo Diseño</string>
     <string name="btn_new_order">Nuevo Pedido</string>
+    <string name="btn_next">Siguiente</string>
     <string name="btn_no">No</string>
     <string name="btn_ok">OK</string>
     <string name="btn_password_recovery">Enviar Correo de Recuperación de Contraseña</string>
@@ -118,7 +119,7 @@
     <string name="title_delete_design">¿Eliminar %1$s?</string>
     <string name="title_delete_order">Eliminar Pedido</string>
     <string name="title_password_recovery">Recuperación de Contraseña.</string>
-    <string name="title_select_order_products">Seleccionar Productos del Pedido</string>
+    <string name="title_select_order_products">Seleccionar Producto</string>
     <string name="title_warning">Advertencia</string>
 
     <!-- Toast   -->
