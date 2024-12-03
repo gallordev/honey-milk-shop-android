@@ -1,21 +1,27 @@
 package com.honeymilk.shop.ui.home
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.honeymilk.shop.R
 import com.honeymilk.shop.databinding.FragmentHomeBinding
 import com.honeymilk.shop.ui.AuthStatusViewModel
 import com.honeymilk.shop.utils.BaseFragment
+import com.honeymilk.shop.utils.PermissionHelper
 import com.honeymilk.shop.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +30,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private val authStatusViewModel: AuthStatusViewModel by activityViewModels()
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            authStatusViewModel.registerNotificationToken()
+            Toast.makeText(
+                requireContext(),
+                "¡Gracias! Ahora recibirás notificaciones importantes.",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Permiso denegado. No recibirás notificaciones importantes.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         authStatusViewModel.currentUser.observe(viewLifecycleOwner) {
@@ -32,14 +56,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 findNavController().navigate(R.id.loginFragment)
             } else {
                 homeViewModel.loadLastCampaign()
+                askNotificationPermission()
             }
         }
 
         homeViewModel.lastCampaign.observe(viewLifecycleOwner) {
             val resource = it ?: return@observe
-            when(resource) {
+            when (resource) {
                 is Resource.Loading -> {
                 }
+
                 is Resource.Success -> {
 
                     binding.homeView.isGone = false
@@ -74,6 +100,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         }
                     }
                 }
+
                 is Resource.Error -> {
                     showErrorMessage(resource.message)
                 }
@@ -99,12 +126,59 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         authStatusViewModel.logout()
                         true
                     }
+
                     else -> false
                 }
             }
 
         }
         requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (PermissionHelper.isPermissionGranted(
+                    requireActivity(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            ) {
+                authStatusViewModel.registerNotificationToken()
+            } else if (PermissionHelper.shouldShowRationale(
+                    requireActivity(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            ) {
+                showPermissionRationale()
+            } else {
+                PermissionHelper.requestPermission(
+                    requireActivity(),
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    requestPermissionLauncher
+                )
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun showPermissionRationale() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Permiso necesario")
+            .setMessage("Para recibir notificaciones importantes, otorga el permiso.")
+            .setPositiveButton("Aceptar") { _, _ ->
+                PermissionHelper.requestPermission(
+                    requireActivity(),
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    requestPermissionLauncher
+                )
+            }
+            .setNegativeButton("Cancelar") { _, _ ->
+                Toast.makeText(
+                    requireContext(),
+                    "No recibirás notificaciones importantes.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .show()
     }
 
 }
